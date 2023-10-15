@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
@@ -20,7 +20,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src --ext ts,tsx",
+    "lint:fix": "npm run lint -- --fix",
+    "pretty": "npx prettier . --write"
   },
   "eslintConfig": {
     "extends": [
@@ -40,5 +43,10 @@
       "last 1 safari version"
     ]
   },
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@3.6.4",
+  "devDependencies": {
+    "@types/eslint": "^8",
+    "eslint": "^8.51.0",
+    "eslint-config-siyoon": "^1.0.1-beta.3"
+  }
 }
