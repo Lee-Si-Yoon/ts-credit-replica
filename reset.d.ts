@@ -1,1 +1,1 @@
-import "eslint-config-siyoon/reset.d";
+import 'eslint-config-siyoon/reset.d';
