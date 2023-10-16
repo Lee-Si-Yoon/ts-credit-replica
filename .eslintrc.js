@@ -14,4 +14,12 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   root: true,
+  overrides: [
+    {
+      files: ['*.tsx'],
+      rules: {
+        '@typescript-eslint/no-var-requires': 'warn',
+      },
+    },
+  ],
 };

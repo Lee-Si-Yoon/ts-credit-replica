@@ -1,8 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import './index.css';
+
+const MSW = import('./mocks/browser');
+
+MSW.then((msw) => {
+  msw.worker.start({ onUnhandledRequest: 'bypass' });
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
