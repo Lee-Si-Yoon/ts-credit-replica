@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-import './index.css';
+import { routesConfig } from './routes/routes-config';
 
 const MSW = import('./mocks/browser');
 
@@ -10,12 +10,14 @@ MSW.then((msw) => {
   msw.worker.start({ onUnhandledRequest: 'bypass' });
 });
 
+const router = createBrowserRouter(routesConfig);
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
