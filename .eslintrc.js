@@ -14,12 +14,8 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   root: true,
-  overrides: [
-    {
-      files: ['*.tsx'],
-      rules: {
-        '@typescript-eslint/no-var-requires': 'warn',
-      },
-    },
-  ],
+  rules: {
+    '@typescript-eslint/no-use-before-define': 'warn',
+    'promise/prefer-await-to-then': 'warn',
+  },
 };
