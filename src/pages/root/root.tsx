@@ -1,14 +1,8 @@
-import React from 'react';
+import { useQuery } from 'react-query';
 import { getMe } from '../remotes';
 
 export function Root() {
-  const self = getMe();
+  const { data } = useQuery('getMe', getMe);
 
-  React.useEffect(() => {
-    self.then((data) => {
-      console.log(data);
-    });
-  }, [self]);
-
-  return <div>root</div>;
+  return <div>{data?.name ?? '-'}</div>;
 }

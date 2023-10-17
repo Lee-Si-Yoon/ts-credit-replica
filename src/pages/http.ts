@@ -8,10 +8,13 @@ export const http = {
       return response.data;
     });
   },
-  // post: function post<Request = any, Response = unknown>(
-  //   url: string,
-  //   data?: Request
-  // ) {
-  //   return axios.post<Response>(url, { data }).then((res) => res.data);
-  // },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  post: async function post<Request = any, Response = unknown>(
+    url: string,
+    data?: Request
+  ) {
+    return axios.post<Response>(url, { data }).then((response) => {
+      return response.data;
+    });
+  },
 };
