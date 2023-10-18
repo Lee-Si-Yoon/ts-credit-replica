@@ -15,7 +15,7 @@ module.exports = {
   },
   root: true,
   rules: {
-    '@typescript-eslint/no-use-before-define': 'warn',
+    '@typescript-eslint/no-use-before-define': 'error',
     'promise/prefer-await-to-then': 'off',
   },
 };

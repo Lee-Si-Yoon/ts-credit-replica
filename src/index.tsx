@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import { routesConfig } from './routes/routes-config';
+import './_normalize.scss';
 
 const MSW = import('./mocks/browser');
 
