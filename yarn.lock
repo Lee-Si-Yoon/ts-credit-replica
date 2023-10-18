@@ -2417,6 +2417,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/colors@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@radix-ui/colors@npm:3.0.0"
+  checksum: 5ac1b69df7a77525e2031c2d2948d6ef8d81c6b163809ee8e17a2138c4977678e3a9f67342595d2c88f0300f51fd2c64e24355008cda6c9db8dfd4ed3eaf9e8f
+  languageName: node
+  linkType: hard
+
 "@remix-run/router@npm:1.10.0":
   version: 1.10.0
   resolution: "@remix-run/router@npm:1.10.0"
@@ -10337,6 +10344,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "my-proj@workspace:."
   dependencies:
+    "@radix-ui/colors": ^3.0.0
     "@testing-library/jest-dom": ^6.1.4
     "@testing-library/react": ^13.4.0
     "@testing-library/user-event": ^13.5.0

@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { GlobalPortal } from './pages/global-protal';
+import { PageLayout } from './pages/page-layout';
 import reportWebVitals from './reportWebVitals';
 import { routesConfig } from './routes/routes-config';
 import './_normalize.scss';
@@ -22,7 +24,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <GlobalPortal.Provider>
+        <PageLayout>
+          <RouterProvider router={router} />
+        </PageLayout>
+      </GlobalPortal.Provider>
     </QueryClientProvider>
   </React.StrictMode>
 );
