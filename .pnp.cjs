@@ -29,6 +29,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@radix-ui/colors", "npm:3.0.0"],\
+            ["@radix-ui/react-icons", "virtual:632a5d0feb0be57f360902defba85616412362640edce250f049d01302bd3beba09d460377d1e8962201594bd0dfddb69ea340d51504034b68cf1558b6ffff55#npm:1.3.0"],\
             ["@testing-library/jest-dom", "virtual:632a5d0feb0be57f360902defba85616412362640edce250f049d01302bd3beba09d460377d1e8962201594bd0dfddb69ea340d51504034b68cf1558b6ffff55#npm:6.1.4"],\
             ["@testing-library/react", "virtual:632a5d0feb0be57f360902defba85616412362640edce250f049d01302bd3beba09d460377d1e8962201594bd0dfddb69ea340d51504034b68cf1558b6ffff55#npm:13.4.0"],\
             ["@testing-library/user-event", "virtual:632a5d0feb0be57f360902defba85616412362640edce250f049d01302bd3beba09d460377d1e8962201594bd0dfddb69ea340d51504034b68cf1558b6ffff55#npm:13.5.0"],\
@@ -4149,6 +4150,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@radix-ui-colors-npm-3.0.0-a7484539fd-5ac1b69df7.zip/node_modules/@radix-ui/colors/",\
           "packageDependencies": [\
             ["@radix-ui/colors", "npm:3.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@radix-ui/react-icons", [\
+        ["npm:1.3.0", {\
+          "packageLocation": "./.yarn/cache/@radix-ui-react-icons-npm-1.3.0-2aeeb348f1-982f3ee227.zip/node_modules/@radix-ui/react-icons/",\
+          "packageDependencies": [\
+            ["@radix-ui/react-icons", "npm:1.3.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:632a5d0feb0be57f360902defba85616412362640edce250f049d01302bd3beba09d460377d1e8962201594bd0dfddb69ea340d51504034b68cf1558b6ffff55#npm:1.3.0", {\
+          "packageLocation": "./.yarn/__virtual__/@radix-ui-react-icons-virtual-8d8be5e54a/0/cache/@radix-ui-react-icons-npm-1.3.0-2aeeb348f1-982f3ee227.zip/node_modules/@radix-ui/react-icons/",\
+          "packageDependencies": [\
+            ["@radix-ui/react-icons", "virtual:632a5d0feb0be57f360902defba85616412362640edce250f049d01302bd3beba09d460377d1e8962201594bd0dfddb69ea340d51504034b68cf1558b6ffff55#npm:1.3.0"],\
+            ["@types/react", "npm:18.2.28"],\
+            ["react", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -13518,6 +13541,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["my-proj", "workspace:."],\
             ["@radix-ui/colors", "npm:3.0.0"],\
+            ["@radix-ui/react-icons", "virtual:632a5d0feb0be57f360902defba85616412362640edce250f049d01302bd3beba09d460377d1e8962201594bd0dfddb69ea340d51504034b68cf1558b6ffff55#npm:1.3.0"],\
             ["@testing-library/jest-dom", "virtual:632a5d0feb0be57f360902defba85616412362640edce250f049d01302bd3beba09d460377d1e8962201594bd0dfddb69ea340d51504034b68cf1558b6ffff55#npm:6.1.4"],\
             ["@testing-library/react", "virtual:632a5d0feb0be57f360902defba85616412362640edce250f049d01302bd3beba09d460377d1e8962201594bd0dfddb69ea340d51504034b68cf1558b6ffff55#npm:13.4.0"],\
             ["@testing-library/user-event", "virtual:632a5d0feb0be57f360902defba85616412362640edce250f049d01302bd3beba09d460377d1e8962201594bd0dfddb69ea340d51504034b68cf1558b6ffff55#npm:13.5.0"],\
