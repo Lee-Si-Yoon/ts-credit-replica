@@ -1,19 +1,18 @@
 import { gray } from '@radix-ui/colors';
 import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';
 import classes from './credit-card-carousel.module.scss';
+import { useCreditCardRecommendationContext } from './credit-card-recommendation';
 import { clamp } from './utils/clamp';
 
-interface CreditCardCarouselProps {
-  cards?: { id: string; src?: string }[];
-  index: number;
-  setIndex: React.Dispatch<React.SetStateAction<number>>;
-}
+export function CreditCardCarousel() {
+  const { data, index, setIndex } = useCreditCardRecommendationContext();
 
-export function CreditCardCarousel({
-  cards,
-  index,
-  setIndex,
-}: CreditCardCarouselProps) {
+  const cards = data?.cards.map((datum) => {
+    const { benefit, ...rest } = datum;
+
+    return rest;
+  });
+
   return (
     <div className={classes.CarouselContainer}>
       <div className={classes.Carousel}>

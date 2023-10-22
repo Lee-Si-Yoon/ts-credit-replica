@@ -13,7 +13,7 @@ const getCards: Parameters<typeof rest.get>[1] = (_, response, ctx) => {
   return response(
     ctx.status(200),
     ctx.json({
-      data: [
+      cards: [
         {
           id: '신한 Deep Once',
           src: 'credit-cards/credit-card-1.png',

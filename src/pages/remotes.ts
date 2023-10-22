@@ -13,5 +13,5 @@ export function getCards() {
 }
 
 export interface GetCards {
-  data: { id: string; src: string; benefit: string }[];
+  cards: { id: string; src: string; benefit: string }[];
 }
