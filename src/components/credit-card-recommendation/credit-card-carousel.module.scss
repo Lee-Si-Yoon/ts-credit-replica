@@ -36,11 +36,11 @@ $cardWidth: 150px;
   }
 
   &.Left {
-    transform: translateX(-100%) rotateY(60deg) scale(0.9);
+    transform: translateX(-100%) rotateY(-60deg) scale(0.9);
   }
 
   &.Right {
-    transform: translateX(100%) rotateY(-60deg) scale(0.9);
+    transform: translateX(100%) rotateY(60deg) scale(0.9);
   }
 }
 
@@ -54,6 +54,7 @@ $cardWidth: 150px;
   top: 0;
   bottom: 0;
   margin: auto;
+  // FIXME: appropriate width
   width: 400px;
   z-index: 999;
   height: calc($cardWidth * 1.58);

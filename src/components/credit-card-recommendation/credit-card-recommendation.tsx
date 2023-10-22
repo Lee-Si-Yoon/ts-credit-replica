@@ -1,6 +1,7 @@
 import React from 'react';
 import type { GetCards } from '../../pages/remotes';
 import { CreditCardCarousel } from './credit-card-carousel';
+import { CreditCardMeta } from './credit-card-meta';
 
 interface CreditCardRecommendationProps {
   index: number;
@@ -38,5 +39,6 @@ const CreditCardRecommendation = ({
 
 CreditCardRecommendation.Default = CreditCardRecommendation;
 CreditCardRecommendation.Carousel = CreditCardCarousel;
+CreditCardRecommendation.Meta = CreditCardMeta;
 
 export { CreditCardRecommendation };

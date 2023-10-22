@@ -39,6 +39,7 @@ export function CreditCardCarousel() {
             />
           );
         })}
+
         <div className={classes.ButtonContainer}>
           <button
             onClick={() => {
