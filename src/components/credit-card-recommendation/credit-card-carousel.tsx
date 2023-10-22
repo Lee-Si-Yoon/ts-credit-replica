@@ -4,7 +4,7 @@ import classes from './credit-card-carousel.module.scss';
 import { clamp } from './utils/clamp';
 
 interface CreditCardCarouselProps {
-  cards: { id: string; src?: string }[];
+  cards?: { id: string; src?: string }[];
   index: number;
   setIndex: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -17,7 +17,7 @@ export function CreditCardCarousel({
   return (
     <div className={classes.CarouselContainer}>
       <div className={classes.Carousel}>
-        {cards.map((item, i) => {
+        {cards?.map((item, i) => {
           const indexLeft = clamp(index - 1, cards.length);
           const indexRight = clamp(index + 1, cards.length);
 
@@ -43,7 +43,7 @@ export function CreditCardCarousel({
         <div className={classes.ButtonContainer}>
           <button
             onClick={() => {
-              return setIndex(clamp(index - 1, cards.length));
+              return setIndex(clamp(index - 1, cards?.length ?? 0));
             }}
             style={{
               backgroundColor: gray.gray6,
@@ -53,7 +53,7 @@ export function CreditCardCarousel({
           </button>
           <button
             onClick={() => {
-              return setIndex(clamp(index + 1, cards.length));
+              return setIndex(clamp(index + 1, cards?.length ?? 0));
             }}
             style={{
               backgroundColor: gray.gray6,
