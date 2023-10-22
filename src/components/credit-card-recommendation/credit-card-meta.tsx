@@ -31,7 +31,10 @@ export function CreditCardMeta() {
         };
 
         return (
-          <div className={[classes.Meta, getClassName()].join(' ')}>
+          <div
+            key={item.id}
+            className={[classes.Meta, getClassName()].join(' ')}
+          >
             <span className={classes.Benefit}>{item.benefit}</span>
             <span className={classes.CardName} style={{ color: gray.gray9 }}>
               {item.id}

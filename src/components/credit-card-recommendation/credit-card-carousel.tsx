@@ -8,7 +8,8 @@ import { clamp } from './utils/clamp';
 const timeOut = 500;
 
 export function CreditCardCarousel() {
-  const { data, index, setIndex } = useCreditCardRecommendationContext();
+  const { data, index, setIndex, setAutoPlay } =
+    useCreditCardRecommendationContext();
 
   const cards = data?.cards.map((datum) => {
     const { benefit, ...rest } = datum;
@@ -46,7 +47,8 @@ export function CreditCardCarousel() {
         <div className={classes.ButtonContainer}>
           <button
             onClick={useThrottleTime(() => {
-              return setIndex(clamp(index - 1, cards?.length ?? 0));
+              setIndex(clamp(index - 1, cards?.length ?? 0));
+              setAutoPlay(false);
             }, timeOut)}
             style={{
               backgroundColor: gray.gray6,
@@ -56,7 +58,8 @@ export function CreditCardCarousel() {
           </button>
           <button
             onClick={useThrottleTime(() => {
-              return setIndex(clamp(index + 1, cards?.length ?? 0));
+              setIndex(clamp(index + 1, cards?.length ?? 0));
+              setAutoPlay(false);
             }, timeOut)}
             style={{
               backgroundColor: gray.gray6,
