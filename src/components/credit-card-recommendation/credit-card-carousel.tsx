@@ -1,8 +1,11 @@
 import { gray } from '@radix-ui/colors';
 import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';
+import { useThrottleTime } from '../../utils/throttle';
 import classes from './credit-card-carousel.module.scss';
 import { useCreditCardRecommendationContext } from './credit-card-recommendation';
 import { clamp } from './utils/clamp';
+
+const timeOut = 500;
 
 export function CreditCardCarousel() {
   const { data, index, setIndex } = useCreditCardRecommendationContext();
@@ -42,9 +45,9 @@ export function CreditCardCarousel() {
 
         <div className={classes.ButtonContainer}>
           <button
-            onClick={() => {
+            onClick={useThrottleTime(() => {
               return setIndex(clamp(index - 1, cards?.length ?? 0));
-            }}
+            }, timeOut)}
             style={{
               backgroundColor: gray.gray6,
             }}
@@ -52,9 +55,9 @@ export function CreditCardCarousel() {
             <ArrowLeftIcon />
           </button>
           <button
-            onClick={() => {
+            onClick={useThrottleTime(() => {
               return setIndex(clamp(index + 1, cards?.length ?? 0));
-            }}
+            }, timeOut)}
             style={{
               backgroundColor: gray.gray6,
             }}
