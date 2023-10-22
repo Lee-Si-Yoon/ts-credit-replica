@@ -31,16 +31,40 @@ $cardWidth: 150px;
 
   &.Active {
     opacity: 1;
-    transform: rotateY(0deg) scale(1);
+    transform: rotateY(0deg);
     z-index: 99;
   }
 
   &.Left {
-    transform: translateX(-100%) rotateY(-60deg) scale(0.9);
+    animation: Left 500ms linear;
   }
 
   &.Right {
-    transform: translateX(100%) rotateY(60deg) scale(0.9);
+    animation: Right 500ms linear;
+  }
+}
+
+@keyframes Left {
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+  50% {
+    transform: translateX(-100%) rotateY(-90deg) scale(0.95);
+  }
+  100% {
+    transform: translateX(0px) rotateY(-135deg) scale(0.9);
+  }
+}
+
+@keyframes Right {
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+  50% {
+    transform: translateX(100%) rotateY(90deg) scale(0.95);
+  }
+  100% {
+    transform: translateX(0px) rotateY(135deg) scale(0.9);
   }
 }
 
