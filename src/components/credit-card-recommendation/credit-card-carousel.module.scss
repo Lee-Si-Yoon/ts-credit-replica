@@ -11,6 +11,40 @@ $cardWidth: 150px;
   }
 }
 
+.EnterLeft {
+  animation: EnterLeft 500ms linear 250ms;
+}
+
+@keyframes EnterLeft {
+  0% {
+    transform: translateX(0px) rotateY(-135deg) scale(0.9);
+  }
+  50% {
+    transform: translateX(-100%) rotateY(-90deg) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1);
+  }
+}
+
+.EnterRight {
+  animation: EnterRight 500ms linear 250ms;
+}
+
+@keyframes EnterRight {
+  0% {
+    transform: translateX(0px) rotateY(135deg) scale(0.9);
+  }
+  50% {
+    transform: translateX(100%) rotateY(90deg) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1);
+  }
+}
+
 .Card {
   position: absolute;
   top: 0;
