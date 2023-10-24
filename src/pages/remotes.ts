@@ -9,9 +9,9 @@ export interface GetMe {
 }
 
 export function getCards() {
-  return http.get<GetCards>('/api/cards');
+  return http.get<CardsResponse>('/api/cards');
 }
 
-export interface GetCards {
+export interface CardsResponse {
   cards: { id: string; src: string; benefit: string }[];
 }

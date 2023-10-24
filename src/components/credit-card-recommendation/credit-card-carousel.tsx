@@ -20,7 +20,7 @@ export function CreditCardCarousel() {
   const leftButtonClickCreatedCard = React.useRef<React.ReactNode>(null);
   const rightButtonClickCreatedCard = React.useRef<React.ReactNode>(null);
 
-  const onLeftButtonClick = useThrottleTime(() => {
+  const showPrevCard = useThrottleTime(() => {
     if (cards) {
       leftButtonClickCreatedCard.current = null;
       rightButtonClickCreatedCard.current = null;
@@ -36,7 +36,7 @@ export function CreditCardCarousel() {
     }
   }, timeOut);
 
-  const onRightButtonClick = useThrottleTime(() => {
+  const showNextCard = useThrottleTime(() => {
     if (cards) {
       leftButtonClickCreatedCard.current = null;
       rightButtonClickCreatedCard.current = null;
@@ -53,8 +53,8 @@ export function CreditCardCarousel() {
   }, timeOut);
 
   // React.useEffect(() => {
-  //   onRightButtonClick();
-  // }, [autoPlayTrigger, onRightButtonClick]);
+  //   showNextCard();
+  // }, [autoPlayTrigger, showNextCard]);
 
   return (
     <div className={classes.CarouselContainer}>
@@ -92,20 +92,18 @@ export function CreditCardCarousel() {
             );
 
           return (
-            <>
-              <img
-                key={item.id}
-                className={[classes.Card, classes.Active].join(' ')}
-                src={item.src}
-                alt={item.id}
-              />
-            </>
+            <img
+              key={item.id}
+              className={[classes.Card, classes.Active].join(' ')}
+              src={item.src}
+              alt={item.id}
+            />
           );
         })}
 
         <div className={classes.ButtonContainer}>
           <button
-            onClick={onLeftButtonClick}
+            onClick={showPrevCard}
             style={{
               backgroundColor: gray.gray6,
             }}
@@ -113,7 +111,7 @@ export function CreditCardCarousel() {
             <ArrowLeftIcon />
           </button>
           <button
-            onClick={onRightButtonClick}
+            onClick={showNextCard}
             style={{
               backgroundColor: gray.gray6,
             }}

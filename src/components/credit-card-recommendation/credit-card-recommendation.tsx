@@ -1,5 +1,5 @@
 import React from 'react';
-import type { GetCards } from '../../pages/remotes';
+import type { CardsResponse } from '../../pages/remotes';
 import { CreditCardCarousel } from './credit-card-carousel';
 import { CreditCardMeta } from './credit-card-meta';
 // import { clamp } from './utils/clamp';
@@ -7,8 +7,8 @@ import { CreditCardMeta } from './credit-card-meta';
 interface CreditCardRecommendationProps {
   index: number;
   // autoPlayTrigger: boolean;
-  data?: GetCards;
-  setIndex: React.Dispatch<React.SetStateAction<number>>;
+  data?: CardsResponse;
+  setIndex: (index: number) => void;
   // setAutoPlay: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

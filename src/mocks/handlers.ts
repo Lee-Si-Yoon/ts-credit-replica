@@ -1,6 +1,18 @@
-import { rest } from 'msw';
+import {
+  type DefaultBodyType,
+  type MockedRequest,
+  type ResponseResolver,
+  rest,
+  type RestContext,
+} from 'msw';
 
-const getMe: Parameters<typeof rest.get>[1] = (_, response, ctx) => {
+type MSWResolver = ResponseResolver<
+  MockedRequest<DefaultBodyType>,
+  RestContext,
+  DefaultBodyType
+>;
+
+const getMe: MSWResolver = (_, response, ctx) => {
   return response(
     ctx.status(200),
     ctx.json({
@@ -9,7 +21,7 @@ const getMe: Parameters<typeof rest.get>[1] = (_, response, ctx) => {
   );
 };
 
-const getCards: Parameters<typeof rest.get>[1] = (_, response, ctx) => {
+const getCards: MSWResolver = (_, response, ctx) => {
   return response(
     ctx.status(200),
     ctx.json({
