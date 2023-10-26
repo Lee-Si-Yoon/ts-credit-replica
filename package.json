@@ -8,7 +8,7 @@
     "serve": "vite preview",
     "lint": "eslint src --ext ts,tsx",
     "lint:fix": "yarn lint -- --fix",
-    "pretty": "yarn prettier . --write"
+    "pretty": "npx prettier . --write"
   },
   "eslintConfig": {
     "extends": [
