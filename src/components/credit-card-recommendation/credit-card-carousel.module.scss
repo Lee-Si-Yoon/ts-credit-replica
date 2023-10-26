@@ -1,0 +1,139 @@
+$cardWidth: 150px;
+
+.CarouselContainer {
+  width: 100%;
+  height: calc($cardWidth * 1.58);
+
+  .Carousel {
+    width: 100%;
+    height: calc($cardWidth * 1.58);
+    position: relative;
+  }
+}
+
+.EnterLeft {
+  animation: EnterLeft 500ms linear 250ms;
+}
+
+@keyframes EnterLeft {
+  0% {
+    transform: translateX(0px) rotateY(-135deg) scale(0.9);
+  }
+  50% {
+    transform: translateX(-100%) rotateY(-90deg) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1);
+  }
+}
+
+.EnterRight {
+  animation: EnterRight 500ms linear 250ms;
+}
+
+@keyframes EnterRight {
+  0% {
+    transform: translateX(0px) rotateY(135deg) scale(0.9);
+  }
+  50% {
+    transform: translateX(100%) rotateY(90deg) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1);
+  }
+}
+
+.Card {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: $cardWidth;
+  height: calc($cardWidth * 1.58);
+  object-fit: cover;
+  cursor: pointer;
+  z-index: 0;
+  opacity: 0;
+  border-radius: 12px;
+  box-shadow: 4px 4px 6px 0px rgba(0, 0, 0, 0.15);
+
+  transition: 500ms;
+
+  &.Active {
+    opacity: 1;
+    transform: rotateY(0deg);
+    z-index: 99;
+  }
+
+  &.Left {
+    animation: Left 500ms linear;
+  }
+
+  &.Right {
+    animation: Right 500ms linear;
+  }
+}
+
+@keyframes Left {
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+  50% {
+    transform: translateX(-100%) rotateY(-90deg) scale(0.95);
+  }
+  100% {
+    transform: translateX(0px) rotateY(-135deg) scale(0.9);
+  }
+}
+
+@keyframes Right {
+  0% {
+    transform: rotateY(0deg) scale(1);
+  }
+  50% {
+    transform: translateX(100%) rotateY(90deg) scale(0.95);
+  }
+  100% {
+    transform: translateX(0px) rotateY(135deg) scale(0.9);
+  }
+}
+
+.ButtonContainer {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  // FIXME: appropriate width
+  width: 400px;
+  z-index: 999;
+  height: calc($cardWidth * 1.58);
+
+  button {
+    height: 40px;
+    width: 40px;
+    border-radius: 40px;
+    border: 0;
+    display: grid;
+    place-items: center;
+
+    svg {
+      width: 24px;
+      height: 24px;
+
+      path {
+        fill: white;
+        stroke: white;
+        stroke-width: 1px;
+      }
+    }
+  }
+}
