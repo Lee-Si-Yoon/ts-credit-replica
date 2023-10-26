@@ -6,7 +6,7 @@ import { GlobalPortal } from './pages/global-protal';
 import { PageLayout } from './pages/page-layout';
 import reportWebVitals from './reportWebVitals';
 import { routesConfig } from './routes/routes-config';
-import './_normalize.scss';
+import './_normalize.css';
 
 const MSW = import('./mocks/browser');
 
