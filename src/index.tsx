@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { GlobalPortal } from './pages/global-protal';
-import { PageLayout } from './pages/page-layout';
+import { GlobalPortal } from '@pages/global-protal';
+import { PageLayout } from '@pages/page-layout';
+import { routesConfig } from '@routes/routes-config';
 import reportWebVitals from './reportWebVitals';
-import { routesConfig } from './routes/routes-config';
 import './_normalize.css';
 
 const MSW = import('./mocks/browser');

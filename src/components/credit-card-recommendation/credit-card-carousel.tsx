@@ -1,10 +1,10 @@
 import React from 'react';
+import { clamp } from '@utils/clamp';
+import { useThrottleTime } from '@utils/throttle';
 import { gray } from '@radix-ui/colors';
 import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';
-import { useThrottleTime } from '../../utils/throttle';
 import classes from './credit-card-carousel.module.scss';
 import { useCreditCardRecommendationContext } from './credit-card-recommendation';
-import { clamp } from './utils/clamp';
 
 const timeOut = 500;
 
