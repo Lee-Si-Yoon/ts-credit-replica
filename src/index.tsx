@@ -7,6 +7,7 @@ import { PageLayout } from '@pages/page-layout';
 import { routesConfig } from '@routes/routes-config';
 import reportWebVitals from './reportWebVitals';
 import './_normalize.css';
+import './_index.css';
 
 const MSW = import('./mocks/browser');
 

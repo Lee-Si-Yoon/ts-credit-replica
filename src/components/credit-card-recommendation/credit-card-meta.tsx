@@ -1,12 +1,46 @@
-import React from 'react';
+import { clamp } from '@utils/clamp';
+import { css } from '@emotion/react';
 import { gray } from '@radix-ui/colors';
-import classes from './credit-card-meta.module.scss';
 import { useCreditCardRecommendationContext } from './credit-card-recommendation';
-import { clamp } from '../../utils/clamp';
+
+const Meta = css`
+  position: absolute;
+  transition: 500ms;
+  text-align: center;
+  width: fit-content;
+`;
+
+const AnimatedMeta = ({
+  index,
+  indexLeft,
+  indexRight,
+}: Record<'index' | 'indexLeft' | 'indexRight', number>) => {
+  return css(Meta, {
+    transform:
+      index === indexLeft
+        ? 'translateX(-75%)'
+        : index === indexRight
+        ? 'translateX(75%)'
+        : 'translateX(0%)',
+  });
+};
+
+const Benefit = css`
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+`;
+
+const CardName = css`
+  display: block;
+  margin-top: 8px;
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: ${gray.gray9};
+`;
 
 export function CreditCardMeta() {
   const { data, index } = useCreditCardRecommendationContext();
-  const containerRef = React.useRef<HTMLDivElement>(null);
 
   const meta = data?.cards.map((datum) => {
     const { src, ...rest } = datum;
@@ -15,30 +49,28 @@ export function CreditCardMeta() {
   });
 
   return (
-    <div ref={containerRef} className={classes.MetaContainer}>
+    <div
+      css={css`
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        position: relative;
+      `}
+    >
       {meta?.map((item, i) => {
         const indexLeft = clamp(index - 1, meta.length);
         const indexRight = clamp(index + 1, meta.length);
 
-        const getClassName = () => {
-          if (i === index) {
-            return classes.Active;
-          } else if (i === indexRight) {
-            return classes.Right;
-          } else if (i === indexLeft) {
-            return classes.Left;
-          } else return '';
-        };
-
         return (
           <div
             key={item.id}
-            className={[classes.Meta, getClassName()].join(' ')}
+            css={AnimatedMeta({ index: i, indexLeft, indexRight })}
+            style={{
+              opacity: i === index ? 1 : 0,
+            }}
           >
-            <span className={classes.Benefit}>{item.benefit}</span>
-            <span className={classes.CardName} style={{ color: gray.gray9 }}>
-              {item.id}
-            </span>
+            <span css={Benefit}>{item.benefit}</span>
+            <span css={CardName}>{item.id}</span>
           </div>
         );
       })}
