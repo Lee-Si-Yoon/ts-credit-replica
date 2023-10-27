@@ -10,19 +10,34 @@ const Meta = css`
   width: fit-content;
 `;
 
+const AnimatedMeta = ({
+  index,
+  indexLeft,
+  indexRight,
+}: Record<'index' | 'indexLeft' | 'indexRight', number>) => {
+  return css(Meta, {
+    transform:
+      index === indexLeft
+        ? 'translateX(-75%)'
+        : index === indexRight
+        ? 'translateX(75%)'
+        : 'translateX(0%)',
+  });
+};
+
 const Benefit = css`
   display: block;
   font-size: 1.25rem;
   font-weight: 700;
 `;
 
-const CardName = css({
-  display: 'block',
-  marginTop: '8px',
-  fontSize: '0.875rem',
-  fontWeight: 300,
-  color: gray.gray9,
-});
+const CardName = css`
+  display: block;
+  margin-top: 8px;
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: ${gray.gray9};
+`;
 
 export function CreditCardMeta() {
   const { data, index } = useCreditCardRecommendationContext();
@@ -49,14 +64,8 @@ export function CreditCardMeta() {
         return (
           <div
             key={item.id}
-            css={Meta}
+            css={AnimatedMeta({ index: i, indexLeft, indexRight })}
             style={{
-              transform:
-                i === indexLeft
-                  ? 'translateX(-75%)'
-                  : i === indexRight
-                  ? 'translateX(75%)'
-                  : 'translateX(0%)',
               opacity: i === index ? 1 : 0,
             }}
           >
