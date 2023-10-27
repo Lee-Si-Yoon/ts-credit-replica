@@ -2,7 +2,7 @@ import React from 'react';
 import { gray } from '@radix-ui/colors';
 import classes from './credit-card-meta.module.scss';
 import { useCreditCardRecommendationContext } from './credit-card-recommendation';
-import { clamp } from './utils/clamp';
+import { clamp } from '../../utils/clamp';
 
 export function CreditCardMeta() {
   const { data, index } = useCreditCardRecommendationContext();

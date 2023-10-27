@@ -1,5 +1,5 @@
 import React from 'react';
-import type { CardsResponse } from '../../pages/remotes';
+import type { CardsResponse } from '@pages/remotes';
 import { CreditCardCarousel } from './credit-card-carousel';
 import { CreditCardMeta } from './credit-card-meta';
 // import { clamp } from './utils/clamp';

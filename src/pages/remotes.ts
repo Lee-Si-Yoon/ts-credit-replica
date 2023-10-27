@@ -1,4 +1,4 @@
-import { http } from './http';
+import { http } from '@pages/http';
 
 export function getMe() {
   return http.get<GetMe>('/api/me');
