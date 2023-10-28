@@ -9,6 +9,7 @@ module.exports = {
     'eslint-config-siyoon/react',
     'eslint-config-siyoon/prettier',
   ],
+  plugins: ['filename-rules'],
   parserOptions: {
     project: true,
     tsconfigRootDir: __dirname,
@@ -17,5 +18,6 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-use-before-define': 'error',
     'promise/prefer-await-to-then': 'off',
+    'filename-rules/match': [2, 'PascalCase'],
   },
 };

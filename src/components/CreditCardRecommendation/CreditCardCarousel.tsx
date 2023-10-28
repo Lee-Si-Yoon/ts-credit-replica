@@ -1,24 +1,24 @@
-import { clamp } from '@utils/clamp';
-import { useThrottleTime } from '@utils/throttle';
+import { clamp } from '@utils/Clamp';
+import { useThrottleTime } from '@utils/Throttle';
 import { css, keyframes } from '@emotion/react';
 import { gray } from '@radix-ui/colors';
 import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';
-import { useCreditCardRecommendationContext } from './credit-card-recommendation';
+import { useCreditCardRecommendationContext } from './CreditCardRecommendation';
 
 const cardWidth = 150;
 const timeOut = 500;
 
-const CarouselContainer = css`
+const carouselContainer = css`
   width: 100%;
   height: calc(${cardWidth}px * 1.58);
 `;
 
-const CarouselBody = css`
-  ${CarouselContainer}
+const carouselBody = css`
+  ${carouselContainer}
   position: relative;
 `;
 
-const Card = css`
+const card = css`
   position: absolute;
   top: 0;
   right: 0;
@@ -31,7 +31,7 @@ const Card = css`
   box-shadow: 4px 4px 6px 0px rgba(0, 0, 0, 0.15);
 `;
 
-const Left = keyframes`
+const left = keyframes`
   0% {
     transform: rotateY(0deg) scale(1);
   }
@@ -43,7 +43,7 @@ const Left = keyframes`
   }
 `;
 
-const Right = keyframes`
+const right = keyframes`
     0% {
     transform: rotateY(0deg) scale(1);
   }
@@ -60,15 +60,15 @@ const AnimatedCard = ({
   indexLeft,
   indexRight,
 }: Record<'index' | 'indexLeft' | 'indexRight', number>) => {
-  return css(Card, {
+  return css(card, {
     transform: 'rotateY(0deg)',
     transition: '500ms',
     zIndex: 0,
     animation:
       index === indexLeft
-        ? `${Left} 500ms linear`
+        ? `${left} 500ms linear`
         : index === indexRight
-        ? `${Right} 500ms linear`
+        ? `${right} 500ms linear`
         : '',
   });
 };
@@ -133,8 +133,8 @@ export function CreditCardCarousel() {
   }, timeOut);
 
   return (
-    <div css={CarouselContainer}>
-      <div css={CarouselBody}>
+    <div css={carouselContainer}>
+      <div css={carouselBody}>
         {cards !== undefined &&
           cards.map((item, i) => {
             const indexLeft = clamp(index - 1, cards.length);
