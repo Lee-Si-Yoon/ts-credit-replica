@@ -1,21 +1,21 @@
-import { clamp } from '@utils/clamp';
+import { clamp } from '@utils/Clamp';
 import { css } from '@emotion/react';
 import { gray } from '@radix-ui/colors';
-import { useCreditCardRecommendationContext } from './credit-card-recommendation';
+import { useCreditCardRecommendationContext } from './CreditCardRecommendation';
 
-const Meta = css`
+const meta = css`
   position: absolute;
   transition: 500ms;
   text-align: center;
   width: fit-content;
 `;
 
-const AnimatedMeta = ({
+const animatedMeta = ({
   index,
   indexLeft,
   indexRight,
 }: Record<'index' | 'indexLeft' | 'indexRight', number>) => {
-  return css(Meta, {
+  return css(meta, {
     transform:
       index === indexLeft
         ? 'translateX(-75%)'
@@ -25,13 +25,13 @@ const AnimatedMeta = ({
   });
 };
 
-const Benefit = css`
+const benefit = css`
   display: block;
   font-size: 1.25rem;
   font-weight: 700;
 `;
 
-const CardName = css`
+const cardName = css`
   display: block;
   margin-top: 8px;
   font-size: 0.875rem;
@@ -64,13 +64,13 @@ export function CreditCardMeta() {
         return (
           <div
             key={item.id}
-            css={AnimatedMeta({ index: i, indexLeft, indexRight })}
+            css={animatedMeta({ index: i, indexLeft, indexRight })}
             style={{
               opacity: i === index ? 1 : 0,
             }}
           >
-            <span css={Benefit}>{item.benefit}</span>
-            <span css={CardName}>{item.id}</span>
+            <span css={benefit}>{item.benefit}</span>
+            <span css={cardName}>{item.id}</span>
           </div>
         );
       })}

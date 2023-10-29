@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
-import { CreditCardRecommendation } from '@components/credit-card-recommendation/credit-card-recommendation';
-import Spacing from '@components/spacing';
-import { getCards, getMe } from '@pages/remotes';
+import { CreditCardRecommendation } from '@components/CreditCardRecommendation/CreditCardRecommendation';
+import Spacing from '@components/Layouts/Spacing';
+import { getCards, getMe } from '@pages/Remotes';
 
 export function Root() {
   const { data: selfData } = useQuery('getMe', getMe);
