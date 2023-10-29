@@ -110,7 +110,7 @@ export function CreditCardCarousel() {
   const [dragDirection, setDragDirection] = React.useState<
     'left' | 'right' | 'idle'
   >('idle');
-  const snapAnimationId = React.useRef(0);
+  const snapAnimationId = React.useRef<NodeJS.Timeout>();
   const carouselContainerRef = React.useRef<HTMLDivElement>(null);
 
   const handleContainerMouseMove = React.useCallback(
