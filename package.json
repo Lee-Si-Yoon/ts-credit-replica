@@ -9,6 +9,7 @@
     "lint": "eslint src --ext ts,tsx",
     "lint:fix": "npm run lint -- --fix",
     "pretty": "npx prettier . --write",
+    "fix": "yarn lint:fix && yarn pretty",
     "postinstall": "husky install"
   },
   "eslintConfig": {
