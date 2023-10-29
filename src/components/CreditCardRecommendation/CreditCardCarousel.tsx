@@ -17,6 +17,7 @@ const carouselContainer = css`
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  user-select: none;
 `;
 
 const carouselBody = css`
@@ -39,12 +40,12 @@ const card = css`
 
 const backwardCard = css`
   ${card}
-  transform: rotateY(calc(360deg)) translateZ(150px)
+  transform: rotateY(calc(180deg)) translateZ(150px)
 `;
 
 const forwardCard = css`
   ${card}
-  transform: rotateY(calc(180deg)) translateZ(150px)
+  transform: rotateY(calc(360deg)) translateZ(150px)
 `;
 
 const cardImg = css`
@@ -95,6 +96,8 @@ const Button = css`
   },
 `;
 
+const snapAnimationOffset = 7;
+
 export function CreditCardCarousel() {
   const { data, index, setIndex } = useCreditCardRecommendationContext();
 
@@ -142,38 +145,41 @@ export function CreditCardCarousel() {
 
       const animate = () => {
         if (direction === 'right') {
+          setDragDirection('right');
           setRotationDegree((prev) => {
-            if (prev % 180 === 0) {
-              if (cards !== undefined) {
-                const nextCardIndex = clamp(index + 1, cards.length);
-                setIndex(nextCardIndex);
-              }
+            const multipleOf180 = Math.floor(prev / 180) * 180;
 
+            if (
+              prev >= multipleOf180 - snapAnimationOffset &&
+              prev <= multipleOf180 + snapAnimationOffset
+            ) {
+              setDragDirection('idle');
               cancelAnimationFrame(snapAnimationId.current);
 
-              return prev;
+              return multipleOf180;
             }
 
-            return prev + 1;
+            return (prev % 360) + snapAnimationOffset;
           });
         } else if (direction === 'left') {
+          setDragDirection('left');
           setRotationDegree((prev) => {
-            if (prev % 180 === 0) {
-              if (cards !== undefined) {
-                const nextCardIndex = clamp(index - 1, cards.length);
-                setIndex(nextCardIndex);
-              }
+            const multipleOf180 = Math.floor(prev / 180) * 180;
 
+            if (
+              prev >= multipleOf180 - snapAnimationOffset &&
+              prev <= multipleOf180 + snapAnimationOffset
+            ) {
+              setDragDirection('idle');
               cancelAnimationFrame(snapAnimationId.current);
 
-              return prev;
+              return multipleOf180;
             }
 
-            return prev - 1;
+            return (prev % 360) - snapAnimationOffset;
           });
         }
 
-        /* FIXME: increase animation speed */
         snapAnimationId.current = requestAnimationFrame(animate);
       };
 
@@ -183,19 +189,19 @@ export function CreditCardCarousel() {
         cancelAnimationFrame(snapAnimationId.current);
       };
     },
-    [cards, index, setIndex]
+    []
   );
 
   const showPrevCard = useThrottleTime(() => {
     setRotationDegree((prev) => {
-      return prev - 1;
+      return prev - (snapAnimationOffset + 1);
     });
     snapRotateCard('left');
   }, timeOut);
 
   const showNextCard = useThrottleTime(() => {
     setRotationDegree((prev) => {
-      return prev + 1;
+      return prev + (snapAnimationOffset + 1);
     });
     snapRotateCard('right');
   }, timeOut);
@@ -216,6 +222,10 @@ export function CreditCardCarousel() {
         }
       }}
       onMouseMove={handleContainerMouseMove}
+      onMouseLeave={() => {
+        snapRotateCard(dragDirection);
+        setIsMouseDown(false);
+      }}
       css={carouselContainer}
     >
       <div
@@ -226,7 +236,6 @@ export function CreditCardCarousel() {
       >
         {cards !== undefined && (
           <>
-            /* FIXME: switch data for backwardCard */
             <span
               key={cards[clamp(index + 1, cards.length)]!.id}
               css={backwardCard}
@@ -247,6 +256,7 @@ export function CreditCardCarousel() {
                 draggable={false}
                 unselectable="on"
               />
+              <span>front</span>
             </span>
           </>
         )}
