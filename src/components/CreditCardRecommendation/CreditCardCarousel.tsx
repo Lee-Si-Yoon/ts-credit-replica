@@ -36,16 +36,9 @@ const card = css`
   height: 100%;
   transform-origin: center;
   transform-style: preserve-3d;
-`;
-
-const backwardCard = css`
-  ${card}
-  transform: rotateY(calc(180deg)) translateZ(150px)
-`;
-
-const forwardCard = css`
-  ${card}
-  transform: rotateY(calc(360deg)) translateZ(150px)
+  transform: rotateY(0deg);
+  transition: 500ms;
+  zindex: 0;
 `;
 
 const cardImg = css`
@@ -119,9 +112,7 @@ export function CreditCardCarousel() {
   const handleContainerMouseMove = React.useCallback(
     (e: React.MouseEvent) => {
       if (isMouseDown === true) {
-        if (isMouseDragging === false) {
-          setIsMouseDragging(true);
-        }
+        setIsMouseDragging(true);
 
         setRotationDegree((prev) => {
           if (e.movementX > 0) {
@@ -132,31 +123,33 @@ export function CreditCardCarousel() {
             setDragDirection('idle');
           }
 
+          const nextDegree = (prev % 360) + e.movementX;
+
+          if (nextDegree >= 90 || nextDegree <= -90) return prev;
+
           return (prev % 360) + e.movementX;
         });
       }
     },
-    [isMouseDown, isMouseDragging]
+    [isMouseDown]
   );
 
   const snapRotateCard = React.useCallback(
     (direction: 'left' | 'right' | 'idle') => {
-      snapAnimationId.current = 0;
-
       const animate = () => {
         if (direction === 'right') {
           setDragDirection('right');
           setRotationDegree((prev) => {
-            const multipleOf180 = Math.floor(prev / 180) * 180;
+            const multipleOf90 = Math.floor(prev / 90) * 90;
 
             if (
-              prev >= multipleOf180 - snapAnimationOffset &&
-              prev <= multipleOf180 + snapAnimationOffset
+              prev >= multipleOf90 - snapAnimationOffset &&
+              prev <= multipleOf90 + snapAnimationOffset
             ) {
               setDragDirection('idle');
               cancelAnimationFrame(snapAnimationId.current);
 
-              return multipleOf180;
+              return 0;
             }
 
             return (prev % 360) + snapAnimationOffset;
@@ -164,16 +157,16 @@ export function CreditCardCarousel() {
         } else if (direction === 'left') {
           setDragDirection('left');
           setRotationDegree((prev) => {
-            const multipleOf180 = Math.floor(prev / 180) * 180;
+            const multipleOf90 = Math.floor(prev / 90) * 90;
 
             if (
-              prev >= multipleOf180 - snapAnimationOffset &&
-              prev <= multipleOf180 + snapAnimationOffset
+              prev >= multipleOf90 - snapAnimationOffset &&
+              prev <= multipleOf90 + snapAnimationOffset
             ) {
               setDragDirection('idle');
               cancelAnimationFrame(snapAnimationId.current);
 
-              return multipleOf180;
+              return 0;
             }
 
             return (prev % 360) - snapAnimationOffset;
@@ -193,18 +186,37 @@ export function CreditCardCarousel() {
   );
 
   const showPrevCard = useThrottleTime(() => {
-    setRotationDegree((prev) => {
-      return prev - (snapAnimationOffset + 1);
-    });
-    snapRotateCard('left');
+    if (cards !== undefined) {
+      const nextCardIndex = clamp(index - 1, cards.length);
+      setIndex(nextCardIndex);
+    }
   }, timeOut);
 
   const showNextCard = useThrottleTime(() => {
-    setRotationDegree((prev) => {
-      return prev + (snapAnimationOffset + 1);
-    });
-    snapRotateCard('right');
+    if (cards !== undefined) {
+      const nextCardIndex = clamp(index + 1, cards.length);
+      setIndex(nextCardIndex);
+    }
   }, timeOut);
+
+  const handleContainerMouseUp = React.useCallback(() => {
+    setIsMouseDown(false);
+
+    if (isMouseDragging === true) {
+      setIsMouseDragging(false);
+      snapRotateCard(dragDirection);
+
+      if (cards !== undefined) {
+        if (dragDirection === 'left') {
+          const nextCardIndex = clamp(index + 1, cards.length);
+          setIndex(nextCardIndex);
+        } else if (dragDirection === 'right') {
+          const nextCardIndex = clamp(index - 1, cards.length);
+          setIndex(nextCardIndex);
+        }
+      }
+    }
+  }, [cards, dragDirection, index, isMouseDragging, setIndex, snapRotateCard]);
 
   return (
     <div
@@ -213,53 +225,47 @@ export function CreditCardCarousel() {
       onMouseDown={() => {
         setIsMouseDown(true);
       }}
-      onMouseUp={() => {
-        setIsMouseDown(false);
-
-        if (isMouseDragging === true) {
-          setIsMouseDragging(false);
-          snapRotateCard(dragDirection);
-        }
-      }}
       onMouseMove={handleContainerMouseMove}
-      onMouseLeave={() => {
-        snapRotateCard(dragDirection);
-        setIsMouseDown(false);
-      }}
+      onMouseUp={handleContainerMouseUp}
+      onMouseLeave={handleContainerMouseUp}
       css={carouselContainer}
     >
       <div
         css={carouselBody}
         style={{
-          transform: `perspective(${perspective}px) rotateY(${rotationDegree}deg)`,
+          transform: `perspective(${perspective}px) rotateY(${0}deg)`,
         }}
       >
-        {cards !== undefined && (
-          <>
-            <span
-              key={cards[clamp(index + 1, cards.length)]!.id}
-              css={backwardCard}
-            >
-              <img
-                css={cardImg}
-                src={cards[clamp(index + 1, cards.length)]!.src}
-                alt={cards[clamp(index + 1, cards.length)]!.id}
-                draggable={false}
-                unselectable="on"
-              />
-            </span>
-            <span key={cards[index]!.id} css={forwardCard}>
-              <img
-                css={cardImg}
-                src={cards[index]!.src}
-                alt={cards[index]!.id}
-                draggable={false}
-                unselectable="on"
-              />
-              <span>front</span>
-            </span>
-          </>
-        )}
+        {cards !== undefined &&
+          cards.map((item, i) => {
+            const indexLeft = clamp(index - 1, cards.length);
+            const indexRight = clamp(index + 1, cards.length);
+
+            return (
+              <span
+                key={item.id}
+                css={card}
+                style={{
+                  opacity: i === index ? 1 : 0,
+                  transform: `rotateY(calc(${
+                    i === indexLeft
+                      ? -90
+                      : i === indexRight
+                      ? 90
+                      : rotationDegree
+                  }deg)) translateZ(150px)`,
+                }}
+              >
+                <img
+                  css={cardImg}
+                  src={item.src}
+                  alt={item.id}
+                  draggable={false}
+                  unselectable="on"
+                />
+              </span>
+            );
+          })}
       </div>
       <div css={ButtonContainer}>
         <button onClick={showPrevCard} css={Button}>
