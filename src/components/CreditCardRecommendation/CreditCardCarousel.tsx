@@ -109,30 +109,27 @@ export function CreditCardCarousel() {
   const snapAnimationId = React.useRef(0);
   const carouselContainerRef = React.useRef<HTMLDivElement>(null);
 
-  const handleContainerMouseMove = React.useCallback(
-    (e: React.MouseEvent) => {
-      if (isMouseDown === true) {
-        setIsMouseDragging(true);
+  const handleContainerMouseMove = (e: React.MouseEvent) => {
+    if (isMouseDown === true) {
+      setIsMouseDragging(true);
 
-        setRotationDegree((prev) => {
-          if (e.movementX > 0) {
-            setDragDirection('right');
-          } else if (e.movementX < 0) {
-            setDragDirection('left');
-          } else {
-            setDragDirection('idle');
-          }
+      setRotationDegree((prev) => {
+        if (e.movementX > 0) {
+          setDragDirection('right');
+        } else if (e.movementX < 0) {
+          setDragDirection('left');
+        } else {
+          setDragDirection('idle');
+        }
 
-          const nextDegree = (prev % 360) + e.movementX;
+        const nextDegree = (prev % 360) + e.movementX;
 
-          if (nextDegree >= 90 || nextDegree <= -90) return prev;
+        if (nextDegree >= 90 || nextDegree <= -90) return prev;
 
-          return (prev % 360) + e.movementX;
-        });
-      }
-    },
-    [isMouseDown]
-  );
+        return nextDegree;
+      });
+    }
+  };
 
   const snapRotateCard = React.useCallback(
     (direction: 'left' | 'right' | 'idle') => {
@@ -199,7 +196,7 @@ export function CreditCardCarousel() {
     }
   }, timeOut);
 
-  const handleContainerMouseUp = React.useCallback(() => {
+  const handleContainerMouseUp = () => {
     setIsMouseDown(false);
 
     if (isMouseDragging === true) {
@@ -216,7 +213,7 @@ export function CreditCardCarousel() {
         }
       }
     }
-  }, [cards, dragDirection, index, isMouseDragging, setIndex, snapRotateCard]);
+  };
 
   return (
     <div
