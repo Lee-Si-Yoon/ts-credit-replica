@@ -12,9 +12,7 @@ interface CreditCardRecommendationProps {
   dragDirection: DragDirections;
   data?: CardsResponse;
   setIndex: (index: number) => void;
-  // autoPlayTrigger: boolean;
-  // setRotationDegree: (degree: number) => void;
-  // setAutoPlay: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAutoPlaying: (isAutoPlaying: boolean) => void;
 }
 
 const CreditCardRecommendationContext =
@@ -24,9 +22,7 @@ const CreditCardRecommendationContext =
     dragDirection: 'idle',
     data: { cards: [] },
     setIndex: () => {},
-    // setRotationDegree: () => {},
-    // autoPlayTrigger: false,
-    // setAutoPlay: () => {},
+    setIsAutoPlaying: () => {},
   });
 
 export const useCreditCardRecommendationContext = () => {
@@ -51,6 +47,39 @@ const CreditCardRecommendation = ({
     setIsMouseDragging,
   } = UseDragDirection();
   const snapAnimationId = React.useRef(0);
+
+  const [isAutoPlaying, setIsAutoPlaying] = React.useState(false);
+  const autoPlayTimer = React.useRef<NodeJS.Timer>();
+  const resetAutoPlayDelay = React.useRef<NodeJS.Timeout>();
+
+  // Whenever isAutoPlaying is set to false, after 3s it will be true again
+  React.useEffect(() => {
+    if (isAutoPlaying === false) {
+      resetAutoPlayDelay.current = setTimeout(() => {
+        return setIsAutoPlaying(true);
+      }, 3000);
+    }
+
+    return () => {
+      clearTimeout(resetAutoPlayDelay.current);
+    };
+  }, [isAutoPlaying]);
+
+  React.useEffect(() => {
+    const onAutoPlay = () => {
+      if (isAutoPlaying === true && data?.cards !== undefined) {
+        setIndex((prevIndex) => {
+          return clamp(prevIndex + 1, data?.cards.length);
+        });
+      }
+    };
+
+    autoPlayTimer.current = setInterval(onAutoPlay, 3000);
+
+    return () => {
+      clearInterval(autoPlayTimer.current);
+    };
+  }, [data?.cards, isAutoPlaying]);
 
   const handleContainerMouseMove = (e: React.MouseEvent) => {
     if (isMouseDragging === true) {
@@ -122,49 +151,15 @@ const CreditCardRecommendation = ({
         if (dragDirection === 'left') {
           const nextCardIndex = clamp(index + 1, data.cards.length);
           setIndex(nextCardIndex);
+          setIsAutoPlaying(false);
         } else if (dragDirection === 'right') {
           const nextCardIndex = clamp(index - 1, data.cards.length);
           setIndex(nextCardIndex);
+          setIsAutoPlaying(false);
         }
       }
     }
   };
-
-  // const autoPlayTimer = React.useRef<NodeJS.Timer>();
-  // const resetAutoPlayDelay = React.useRef<NodeJS.Timeout>();
-
-  // React.useEffect(() => {
-  //   if (!autoPlay) {
-  //     resetAutoPlayDelay.current = setTimeout(() => {
-  //       return setAutoPlay(true);
-  //     }, 3000);
-  //   }
-
-  //   return () => {
-  //     clearTimeout(resetAutoPlayDelay.current);
-  //   };
-  // }, [autoPlay]);
-
-  // React.useEffect(() => {
-  //   const onAutoPlay = () => {
-  //     setAutoPlayTrigger((prev) => {
-  //       return !prev;
-  //     });
-  //     const cardList = data?.cards;
-
-  //     if (autoPlay && cardList) {
-  //       setIndex((prevIndex) => {
-  //         return clamp(prevIndex + 1, cardList.length ?? 0);
-  //       });
-  //     }
-  //   };
-
-  //   autoPlayTimer.current = setInterval(onAutoPlay, 3000);
-
-  //   return () => {
-  //     clearInterval(autoPlayTimer.current);
-  //   };
-  // }, [autoPlay, data?.cards, index]);
 
   const providerValue = React.useMemo(() => {
     return {
@@ -174,6 +169,7 @@ const CreditCardRecommendation = ({
       data,
       setIndex,
       setRotationDegree,
+      setIsAutoPlaying,
     };
   }, [index, rotationDegree, dragDirection, data]);
 

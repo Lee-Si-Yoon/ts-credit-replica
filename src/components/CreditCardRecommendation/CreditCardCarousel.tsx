@@ -90,7 +90,7 @@ const button = css`
 `;
 
 export function CreditCardCarousel() {
-  const { data, index, rotationDegree, setIndex } =
+  const { data, index, rotationDegree, setIndex, setIsAutoPlaying } =
     useCreditCardRecommendationContext();
 
   const cards = data?.cards.map((datum) => {
@@ -103,6 +103,7 @@ export function CreditCardCarousel() {
     if (cards !== undefined) {
       const nextCardIndex = clamp(index - 1, cards.length);
       setIndex(nextCardIndex);
+      setIsAutoPlaying(false);
     }
   }, throttleTime);
 
@@ -110,6 +111,7 @@ export function CreditCardCarousel() {
     if (cards !== undefined) {
       const nextCardIndex = clamp(index + 1, cards.length);
       setIndex(nextCardIndex);
+      setIsAutoPlaying(false);
     }
   }, throttleTime);
 
