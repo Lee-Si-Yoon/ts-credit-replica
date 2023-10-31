@@ -3,11 +3,13 @@ import type { CardsResponse } from '@pages/Remotes';
 import { clamp } from '@utils/Clamp';
 import { CreditCardCarousel } from './CreditCardCarousel';
 import { CreditCardMeta } from './CreditCardMeta';
+import type { DragDirections } from './UseDragDirection';
 import UseDragDirection from './UseDragDirection';
 
 interface CreditCardRecommendationProps {
   index: number;
   rotationDegree: number;
+  dragDirection: DragDirections;
   data?: CardsResponse;
   setIndex: (index: number) => void;
   // autoPlayTrigger: boolean;
@@ -19,6 +21,7 @@ const CreditCardRecommendationContext =
   React.createContext<CreditCardRecommendationProps>({
     index: 0,
     rotationDegree: 0,
+    dragDirection: 'idle',
     data: { cards: [] },
     setIndex: () => {},
     // setRotationDegree: () => {},
@@ -164,8 +167,15 @@ const CreditCardRecommendation = ({
   // }, [autoPlay, data?.cards, index]);
 
   const providerValue = React.useMemo(() => {
-    return { index, rotationDegree, data, setIndex, setRotationDegree };
-  }, [index, rotationDegree, data]);
+    return {
+      index,
+      rotationDegree,
+      dragDirection,
+      data,
+      setIndex,
+      setRotationDegree,
+    };
+  }, [index, rotationDegree, dragDirection, data]);
 
   return (
     <CreditCardRecommendationContext.Provider value={providerValue}>

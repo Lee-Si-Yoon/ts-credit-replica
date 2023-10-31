@@ -1,15 +1,16 @@
 import React from 'react';
 import { addEvent, removeEvent, touchy, type TouchyEvent } from './Touchy';
 
+export type DragDirections = 'left' | 'right' | 'idle';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function UseDragDirection<T extends HTMLElement = any>() {
   const ref = React.useRef<T>();
 
   const [isMouseDown, setIsMouseDown] = React.useState(false);
   const [isMouseDragging, setIsMouseDragging] = React.useState(false);
-  const [dragDirection, setDragDirection] = React.useState<
-    'left' | 'right' | 'idle'
-  >('idle');
+  const [dragDirection, setDragDirection] =
+    React.useState<DragDirections>('idle');
 
   const handleMouseDown = () => {
     setIsMouseDown(true);
