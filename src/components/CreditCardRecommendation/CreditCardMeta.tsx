@@ -3,19 +3,26 @@ import { css } from '@emotion/react';
 import { gray } from '@radix-ui/colors';
 import { useCreditCardRecommendationContext } from './CreditCardRecommendation';
 
-const meta = css`
+const metaDataContainer = css`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+`;
+
+const metaData = css`
   position: absolute;
   transition: 500ms;
   text-align: center;
   width: fit-content;
 `;
 
-const animatedMeta = ({
+const animatedMetaData = ({
   index,
   indexLeft,
   indexRight,
 }: Record<'index' | 'indexLeft' | 'indexRight', number>) => {
-  return css(meta, {
+  return css(metaData, {
     transform:
       index === indexLeft
         ? 'translateX(-75%)'
@@ -49,14 +56,7 @@ export function CreditCardMeta() {
   });
 
   return (
-    <div
-      css={css`
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        position: relative;
-      `}
-    >
+    <div css={metaDataContainer}>
       {meta?.map((item, i) => {
         const indexLeft = clamp(index - 1, meta.length);
         const indexRight = clamp(index + 1, meta.length);
@@ -64,7 +64,7 @@ export function CreditCardMeta() {
         return (
           <div
             key={item.id}
-            css={animatedMeta({ index: i, indexLeft, indexRight })}
+            css={animatedMetaData({ index: i, indexLeft, indexRight })}
             style={{
               opacity: i === index ? 1 : 0,
             }}
