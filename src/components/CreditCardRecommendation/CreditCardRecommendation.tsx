@@ -3,6 +3,7 @@ import type { CardsResponse } from '@pages/Remotes';
 import { clamp } from '@utils/Clamp';
 import { CreditCardCarousel } from './CreditCardCarousel';
 import { CreditCardMeta } from './CreditCardMeta';
+import UseDragDirection from './UseDragDirection';
 
 interface CreditCardRecommendationProps {
   index: number;
@@ -38,27 +39,19 @@ const CreditCardRecommendation = ({
   const [index, setIndex] = React.useState(0);
   const [rotationDegree, setRotationDegree] = React.useState(0);
 
-  const [isMouseDown, setIsMouseDown] = React.useState(false);
-  const [isMouseDragging, setIsMouseDragging] = React.useState(false);
-  const [dragDirection, setDragDirection] = React.useState<
-    'left' | 'right' | 'idle'
-  >('idle');
+  const {
+    ref,
+    dragDirection,
+    isMouseDragging,
+    // FIXME: how to handle mouseUp & mouseLeave
+    setIsMouseDown,
+    setIsMouseDragging,
+  } = UseDragDirection();
   const snapAnimationId = React.useRef(0);
-  const carouselContainerRef = React.useRef<HTMLDivElement>(null);
 
   const handleContainerMouseMove = (e: React.MouseEvent) => {
-    if (isMouseDown === true) {
-      setIsMouseDragging(true);
-
+    if (isMouseDragging === true) {
       setRotationDegree((prev) => {
-        if (e.movementX > 0) {
-          setDragDirection('right');
-        } else if (e.movementX < 0) {
-          setDragDirection('left');
-        } else {
-          setDragDirection('idle');
-        }
-
         const nextDegree = (prev % 360) + e.movementX;
 
         if (nextDegree >= 90 || nextDegree <= -90) return prev;
@@ -72,7 +65,6 @@ const CreditCardRecommendation = ({
     (direction: 'left' | 'right' | 'idle') => {
       const animate = () => {
         if (direction === 'right') {
-          setDragDirection('right');
           setRotationDegree((prev) => {
             const multipleOf90 = Math.floor(prev / 90) * 90;
 
@@ -80,7 +72,6 @@ const CreditCardRecommendation = ({
               prev >= multipleOf90 - snapAnimationOffset &&
               prev <= multipleOf90 + snapAnimationOffset
             ) {
-              setDragDirection('idle');
               cancelAnimationFrame(snapAnimationId.current);
 
               return 0;
@@ -89,7 +80,6 @@ const CreditCardRecommendation = ({
             return (prev % 360) + snapAnimationOffset;
           });
         } else if (direction === 'left') {
-          setDragDirection('left');
           setRotationDegree((prev) => {
             const multipleOf90 = Math.floor(prev / 90) * 90;
 
@@ -97,7 +87,6 @@ const CreditCardRecommendation = ({
               prev >= multipleOf90 - snapAnimationOffset &&
               prev <= multipleOf90 + snapAnimationOffset
             ) {
-              setDragDirection('idle');
               cancelAnimationFrame(snapAnimationId.current);
 
               return 0;
@@ -182,10 +171,7 @@ const CreditCardRecommendation = ({
     <CreditCardRecommendationContext.Provider value={providerValue}>
       <div
         role="presentation"
-        ref={carouselContainerRef}
-        onMouseDown={() => {
-          setIsMouseDown(true);
-        }}
+        ref={ref}
         onMouseMove={handleContainerMouseMove}
         onMouseUp={handleContainerMouseUp}
         onMouseLeave={handleContainerMouseUp}
