@@ -1,79 +1,59 @@
 import { clamp } from '@utils/Clamp';
 import { useThrottleTime } from '@utils/Throttle';
-import { css, keyframes } from '@emotion/react';
+import { css } from '@emotion/react';
 import { gray } from '@radix-ui/colors';
 import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';
 import { useCreditCardRecommendationContext } from './CreditCardRecommendation';
 
-const cardWidth = 150;
-const timeOut = 500;
+const throttleTime = 500;
 
 const carouselContainer = css`
-  width: 100%;
-  height: calc(${cardWidth}px * 1.58);
-`;
-
-const carouselBody = css`
-  ${carouselContainer}
   position: relative;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
 `;
 
-const card = css`
+const outerCylinder = css`
+  width: 150px;
+  aspect-ratio: 1 / 1.58;
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateY(0deg);
+`;
+
+const innerCylinder = css`
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  margin: auto;
-  width: ${cardWidth}px;
-  height: calc(${cardWidth}px * 1.58);
-  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: ${throttleTime}ms;
+`;
+
+const card = css`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
   box-shadow: 4px 4px 6px 0px rgba(0, 0, 0, 0.15);
+  user-select: none;
+  cursor: pointer;
 `;
 
-const left = keyframes`
-  0% {
-    transform: rotateY(0deg) scale(1);
-  }
-  50% {
-    transform: translateX(-100%) rotateY(-90deg) scale(0.95);
-  }
-  100% {
-    transform: translateX(0px) rotateY(-135deg) scale(0.9);
-  }
-`;
+const buttonWidth = 40;
 
-const right = keyframes`
-    0% {
-    transform: rotateY(0deg) scale(1);
-  }
-  50% {
-    transform: translateX(100%) rotateY(90deg) scale(0.95);
-  }
-  100% {
-    transform: translateX(0px) rotateY(135deg) scale(0.9);
-  }
-`;
-
-const AnimatedCard = ({
-  index,
-  indexLeft,
-  indexRight,
-}: Record<'index' | 'indexLeft' | 'indexRight', number>) => {
-  return css(card, {
-    transform: 'rotateY(0deg)',
-    transition: '500ms',
-    zIndex: 0,
-    animation:
-      index === indexLeft
-        ? `${left} 500ms linear`
-        : index === indexRight
-        ? `${right} 500ms linear`
-        : '',
-  });
-};
-
-const ButtonContainer = css`
+const buttonContainer = css`
   position: absolute;
   display: flex;
   justify-content: space-between;
@@ -82,20 +62,20 @@ const ButtonContainer = css`
   right: 0;
   top: 0;
   bottom: 0;
+  width: calc(300px + ${buttonWidth * 2}px);
+  height: fit-content;
   margin: auto;
-  width: 400px;
-  z-index: 999;
-  height: calc(${cardWidth}px * 1.58);
 `;
 
-const Button = css`
-  height: 40px;
-  width: 40px;
-  border-radius: 40px;
+const button = css`
+  height: ${buttonWidth}px;
+  width: ${buttonWidth}px;
+  border-radius: ${buttonWidth}px;
   border: 0;
   display: grid;
   place-items: center;
   background-color: ${gray.gray6};
+  cursor: pointer;
 
   & svg {
     width: 24px;
@@ -110,7 +90,8 @@ const Button = css`
 `;
 
 export function CreditCardCarousel() {
-  const { data, index, setIndex } = useCreditCardRecommendationContext();
+  const { data, index, rotationDegree, setIndex, setIsAutoPlaying } =
+    useCreditCardRecommendationContext();
 
   const cards = data?.cards.map((datum) => {
     const { benefit, ...rest } = datum;
@@ -122,46 +103,59 @@ export function CreditCardCarousel() {
     if (cards !== undefined) {
       const nextCardIndex = clamp(index - 1, cards.length);
       setIndex(nextCardIndex);
+      setIsAutoPlaying(false);
     }
-  }, timeOut);
+  }, throttleTime);
 
   const showNextCard = useThrottleTime(() => {
     if (cards !== undefined) {
       const nextCardIndex = clamp(index + 1, cards.length);
       setIndex(nextCardIndex);
+      setIsAutoPlaying(false);
     }
-  }, timeOut);
+  }, throttleTime);
 
   return (
     <div css={carouselContainer}>
-      <div css={carouselBody}>
+      <div css={outerCylinder}>
         {cards !== undefined &&
           cards.map((item, i) => {
             const indexLeft = clamp(index - 1, cards.length);
             const indexRight = clamp(index + 1, cards.length);
 
             return (
-              <img
+              <span
                 key={item.id}
-                css={AnimatedCard({ index: i, indexLeft, indexRight })}
+                css={innerCylinder}
                 style={{
                   opacity: i === index ? 1 : 0,
-                  zIndex: i === index ? 99 : 0,
+                  transform: `rotateY(calc(${
+                    i === indexLeft
+                      ? -90
+                      : i === indexRight
+                      ? 90
+                      : rotationDegree
+                  }deg)) translateZ(150px)`,
                 }}
-                src={item.src}
-                alt={item.id}
-              />
+              >
+                <img
+                  css={card}
+                  src={item.src}
+                  alt={item.id}
+                  draggable={false}
+                  unselectable="on"
+                />
+              </span>
             );
           })}
-
-        <div css={ButtonContainer}>
-          <button onClick={showPrevCard} css={Button}>
-            <ArrowLeftIcon />
-          </button>
-          <button onClick={showNextCard} css={Button}>
-            <ArrowRightIcon />
-          </button>
-        </div>
+      </div>
+      <div css={buttonContainer}>
+        <button onClick={showPrevCard} css={button}>
+          <ArrowLeftIcon />
+        </button>
+        <button onClick={showNextCard} css={button}>
+          <ArrowRightIcon />
+        </button>
       </div>
     </div>
   );
