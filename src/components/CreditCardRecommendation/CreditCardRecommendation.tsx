@@ -1,10 +1,10 @@
 import React from 'react';
-import type { CardsResponse } from '@pages/Remotes';
-import { clamp } from '@utils/Clamp';
+import type { CardsResponse } from '@pages/remotes';
+import { clamp } from '@utils/clamp';
 import { CreditCardCarousel } from './CreditCardCarousel';
 import { CreditCardMeta } from './CreditCardMeta';
-import type { DragDirections } from './UseDragDirection';
-import UseDragDirection from './UseDragDirection';
+import type { DragDirections } from './useDragDirection';
+import UseDragDirection from './useDragDirection';
 
 interface CreditCardRecommendationProps {
   index: number;
@@ -45,7 +45,7 @@ const CreditCardRecommendation = ({
     // FIXME: how to handle mouseUp & mouseLeave
     setIsMouseDown,
     setIsMouseDragging,
-  } = UseDragDirection();
+  } = UseDragDirection<HTMLDivElement>();
   const snapAnimationId = React.useRef(0);
 
   const [isAutoPlaying, setIsAutoPlaying] = React.useState(false);

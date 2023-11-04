@@ -18,6 +18,12 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-use-before-define': 'error',
     'promise/prefer-await-to-then': 'off',
-    'filename-rules/match': [2, { '.ts': 'camelCase', '.tsx': 'PascalCase' }],
+    'filename-rules/match': [
+      2,
+      {
+        '.ts': 'camelCase',
+        '^(?!index.tsx?$).+.tsx$': 'PascalCase',
+      },
+    ],
   },
 };

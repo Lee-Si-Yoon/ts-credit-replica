@@ -1,5 +1,5 @@
-import { clamp } from '@utils/Clamp';
-import { useThrottleTime } from '@utils/Throttle';
+import { clamp } from '@utils/clamp';
+import { useThrottleTime } from '@utils/throttle';
 import { css } from '@emotion/react';
 import { gray } from '@radix-ui/colors';
 import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';

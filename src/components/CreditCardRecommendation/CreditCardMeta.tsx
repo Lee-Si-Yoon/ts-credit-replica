@@ -1,5 +1,5 @@
-import { clamp } from '@utils/Clamp';
-import { lerpRanges } from '@utils/Lerp';
+import { clamp } from '@utils/clamp';
+import { lerpRanges } from '@utils/lerp';
 import { css } from '@emotion/react';
 import { gray } from '@radix-ui/colors';
 import { useCreditCardRecommendationContext } from './CreditCardRecommendation';

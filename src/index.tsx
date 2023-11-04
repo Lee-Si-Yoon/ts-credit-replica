@@ -5,11 +5,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { GlobalPortal } from '@pages/GlobalPortal';
 import { PageLayout } from '@pages/PageLayout';
 import { routesConfig } from '@routes/RoutesConfig';
-import reportWebVitals from './ReportWebVitals';
+import reportWebVitals from './reportWebVitals';
 import './_normalize.css';
 import './_index.css';
 
-const MSW = import('./mocks/Browser');
+const MSW = import('./mocks/browser');
 
 MSW.then((msw) => {
   msw.worker.start({ onUnhandledRequest: 'bypass' });
