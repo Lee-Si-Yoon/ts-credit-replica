@@ -11,9 +11,7 @@ export function Root() {
   return (
     <>
       <Spacing size={44} />
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <CreditCardBilling width={`calc(100% - 2rem)`} height={40} />
-      </div>
+      <CreditCardBilling width={`100%`} height={80} />
       <Spacing size={20} />
       <h1>{`${selfData?.name}님을 위한 추천 카드`}</h1>
       <CreditCardRecommendation.Default data={cardData}>

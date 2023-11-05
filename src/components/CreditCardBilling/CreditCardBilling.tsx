@@ -3,7 +3,7 @@ import { scaleCanvas, setCanvasSize } from '@utils/canvas/canvasDimensions';
 import { css } from '@emotion/react';
 import { pallete } from './colorPallete';
 import { mockData } from './mockData';
-import type { Size } from './types';
+import type { Sides, Size } from './types';
 
 export type Category = 'shopping' | 'transfer' | 'food';
 
@@ -16,6 +16,7 @@ interface CreditCardBillingProps {
   width: React.CSSProperties['width'];
   height: React.CSSProperties['height'];
   data?: Record<'data', CreditCardBilling[]>;
+  margin?: Sides;
 }
 
 const Container = css`
@@ -29,11 +30,18 @@ const Canvas = css`
 `;
 
 // const roundRectRadii = 12;
+const defaultMargins = {
+  top: 40,
+  bottom: 20,
+  left: 20,
+  right: 20,
+};
 
 export default function CreditCardBilling({
   data = mockData,
   width,
   height,
+  margin = defaultMargins,
 }: CreditCardBillingProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -52,6 +60,7 @@ export default function CreditCardBilling({
           containerRef: containerRef.current,
           colorPallete: pallete,
           padding: 4,
+          margin,
         });
       }
     };
@@ -62,7 +71,7 @@ export default function CreditCardBilling({
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [data]);
+  }, [data, margin]);
 
   React.useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -72,6 +81,7 @@ export default function CreditCardBilling({
           data,
           containerRef: containerRef.current,
           padding: 4,
+          margin,
         });
 
         if (selected !== null) {
@@ -85,7 +95,7 @@ export default function CreditCardBilling({
     return () => {
       window.removeEventListener('click', handleClick);
     };
-  }, [data]);
+  }, [data, margin]);
 
   return (
     <div
@@ -101,7 +111,7 @@ export default function CreditCardBilling({
 
 interface CreditCardBillingWithCoords extends CreditCardBilling {
   x: { start: number; end: number };
-  height: number;
+  y: { start: number; end: number };
   percentage: number;
 }
 
@@ -109,31 +119,37 @@ const getCoordinatesAndPercentages = ({
   data,
   xMax,
   yMax,
+  margin = defaultMargins,
   padding = 4,
 }: {
   data: CreditCardBilling[];
   xMax: number;
   yMax: number;
-  padding: number;
+  margin?: Sides;
+  padding?: number;
 }) => {
   const withCoordinates: CreditCardBillingWithCoords[] = [];
   const accumulativeValue = data.reduce((a, c) => {
     return a + c.value;
   }, 0);
-  const reRangedXMax = xMax / accumulativeValue;
-  let rectStart = 0;
+  const reRangedXMaxRatio =
+    (xMax - margin.right - margin.left) / accumulativeValue;
+  let rectStart = margin.left;
 
   data.forEach((datum, i) => {
     const isLast = i === data.length - 1;
     const paddingAdjustment = isLast ? 0 : padding / 2;
     const width =
-      accumulativeValue * (datum.value / accumulativeValue) * reRangedXMax;
+      accumulativeValue * (datum.value / accumulativeValue) * reRangedXMaxRatio;
     const start = i === 0 ? rectStart : rectStart + padding / 2;
     const end = rectStart + width - paddingAdjustment;
     withCoordinates.push({
       ...datum,
       x: { start, end },
-      height: yMax,
+      y: {
+        start: margin.top,
+        end: yMax - margin.top - margin.bottom,
+      },
       percentage: parseFloat(
         ((datum.value / accumulativeValue) * 100).toFixed(1)
       ),
@@ -148,45 +164,41 @@ const drawChart = ({
   canvasRef,
   containerRef,
   data,
+  margin = defaultMargins,
   padding = 4,
-  colorPallete,
+  colorPallete = pallete,
 }: {
   canvasRef: HTMLCanvasElement;
   containerRef: HTMLDivElement;
   data: Record<'data', CreditCardBilling[]>;
+  margin?: Sides;
   padding?: number;
-  colorPallete: Record<string, React.CSSProperties['color']>;
+  colorPallete?: Record<string, React.CSSProperties['color']>;
 }) => {
   const containerDimension = containerRef.getBoundingClientRect();
   const withCoordinates = getCoordinatesAndPercentages({
     data: data.data.sort((a, b) => {
       return b.value - a.value;
     }),
-    padding,
     xMax: containerDimension.width,
     yMax: containerDimension.height,
+    padding,
+    margin,
   });
 
   const ctx = canvasRef.getContext('2d');
   if (ctx === null) return;
 
   withCoordinates.forEach((datum, i) => {
-    const { x, height } = datum;
+    const { x, y } = datum;
     ctx.save();
 
     if (i === 0 || i === withCoordinates.length - 1) {
       ctx.fillStyle = `${colorPallete[datum.category]}`;
-      ctx.fillRect(x.start, 0, x.end - x.start, height);
-      // FIXME: draw rounded rect
-      // , [
-      //   i === 0 ? roundRectRadii : 0,
-      //   i === withCoordinates.length - 1 ? roundRectRadii : 0,
-      //   i === withCoordinates.length - 1 ? roundRectRadii : 0,
-      //   i === 0 ? roundRectRadii : 0,
-      // ]
+      ctx.fillRect(x.start, y.start, x.end - x.start, y.end);
     } else {
       ctx.fillStyle = `${pallete[datum.category]}`;
-      ctx.fillRect(x.start, 0, x.end - x.start, height);
+      ctx.fillRect(x.start, y.start, x.end - x.start, y.end);
     }
 
     ctx.restore();
@@ -198,11 +210,13 @@ const selectDatum = ({
   containerRef,
   data,
   padding,
+  margin = defaultMargins,
 }: {
   e: MouseEvent;
   containerRef: HTMLDivElement;
   data: Record<'data', CreditCardBilling[]>;
   padding: number;
+  margin: Sides;
 }) => {
   const containerDimension = containerRef.getBoundingClientRect();
   const withCoordinates = getCoordinatesAndPercentages({
@@ -212,13 +226,17 @@ const selectDatum = ({
     xMax: containerDimension.width,
     yMax: containerDimension.height,
     padding,
+    margin,
   });
   const selectTarget = withCoordinates.find((datum) => {
+    console.log(e.clientY - containerDimension.top);
+    console.log(datum.y);
+
     if (
       e.clientX >= datum.x.start &&
       e.clientX <= datum.x.end &&
-      e.clientY <= containerDimension.top + datum.height &&
-      e.clientY >= containerDimension.top
+      e.clientY - containerDimension.top >= datum.y.start &&
+      e.clientY - containerDimension.top <= datum.y.start + datum.y.end
     ) {
       return true;
     }
@@ -236,7 +254,7 @@ const selectDatum = ({
 const drawPopover = ({
   canvasRef,
   selected,
-  modalSize = { width: 50, height: 50 },
+  modalSize = { width: 50, height: 30 },
   triangleSize = { width: 20, height: 10 },
 }: {
   canvasRef: HTMLCanvasElement;
@@ -248,7 +266,7 @@ const drawPopover = ({
   if (ctx === null) return;
   const centerPoint = {
     x: selected.x.start + (selected.x.end - selected.x.start) / 2,
-    y: selected.height / 2,
+    y: selected.y.start + selected.y.end / 2,
   };
   ctx.fillStyle = 'white';
   ctx.shadowColor = 'black';
@@ -276,6 +294,9 @@ const drawPopover = ({
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = 'black';
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
   ctx.fillText(
     `${selected.percentage}%`,
     centerPoint.x,
