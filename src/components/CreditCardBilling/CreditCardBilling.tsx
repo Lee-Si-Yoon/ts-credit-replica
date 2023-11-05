@@ -2,17 +2,23 @@ import React from 'react';
 import { scaleCanvas, setCanvasSize } from '@utils/canvas/canvasDimensions';
 import { clearCanvas } from '@utils/canvas/clearCanvas';
 import { canvasRoundRectPath } from '@utils/canvas/shapes/roundRect';
-import { canvasTrianglePath } from '@utils/canvas/shapes/triangle';
 import { css } from '@emotion/react';
 import { pallete } from './colorPallete';
 import { mockData } from './mockData';
-import type { Sides, Size } from './types';
+import { drawPopover } from './popOver';
+import type { Sides } from './types';
 
 export type Category = 'shopping' | 'transfer' | 'food';
 
 export interface CreditCardBilling {
   category: Category;
   value: number;
+}
+
+export interface CreditCardBillingWithCoords extends CreditCardBilling {
+  x: { start: number; end: number };
+  y: { start: number; end: number };
+  percentage: number;
 }
 
 interface CreditCardBillingProps {
@@ -116,9 +122,12 @@ export default function CreditCardBilling({
               containerRef.current !== null &&
               popoverCanvasRef.current !== null
             ) {
+              clearCanvas({
+                container: containerRef.current,
+                targetCanvas: popoverCanvasRef.current,
+              });
               drawPopover({
                 canvasRef: popoverCanvasRef.current,
-                containerRef: containerRef.current,
                 selected,
                 opacity,
               });
@@ -155,12 +164,6 @@ export default function CreditCardBilling({
       <canvas ref={popoverCanvasRef} css={Canvas} />
     </div>
   );
-}
-
-interface CreditCardBillingWithCoords extends CreditCardBilling {
-  x: { start: number; end: number };
-  y: { start: number; end: number };
-  percentage: number;
 }
 
 const getCoordinatesAndPercentages = ({
@@ -300,77 +303,5 @@ const selectDatum = ({
     return false;
   });
 
-  if (selectTarget !== undefined) {
-    return selectTarget;
-  } else {
-    return null;
-  }
-};
-
-const drawPopover = ({
-  canvasRef,
-  containerRef,
-  selected,
-  opacity,
-  modalSize = { width: 50, height: 30 },
-  triangleSize = { width: 20, height: 10 },
-}: {
-  canvasRef: HTMLCanvasElement;
-  containerRef: HTMLDivElement;
-  selected: CreditCardBillingWithCoords;
-  opacity: number;
-  modalSize?: Size;
-  triangleSize?: Size;
-}) => {
-  clearCanvas({ container: containerRef, targetCanvas: canvasRef });
-  const ctx = canvasRef.getContext('2d');
-  // to separate shadow and filled paths clone the canvas and apply drawImage
-  const detached = canvasRef.cloneNode() as HTMLCanvasElement;
-  const detachedCtx = detached.getContext('2d');
-
-  if (ctx === null || detachedCtx === null) return;
-
-  ctx.globalAlpha = opacity;
-  detachedCtx.globalAlpha = opacity;
-  detachedCtx.fillStyle = 'white';
-
-  const centerPoint = {
-    x: selected.x.start + (selected.x.end - selected.x.start) / 2,
-    y: selected.y.start + selected.y.end / 2,
-  };
-  canvasRoundRectPath({
-    targetCanvas: detached,
-    x: centerPoint.x - modalSize.width / 2,
-    y: centerPoint.y + triangleSize.height,
-    w: modalSize.width,
-    h: modalSize.height,
-    radius: {
-      topLeft: 12,
-      bottomLeft: 12,
-      topRight: 12,
-      bottomRight: 12,
-    },
-  });
-  detachedCtx.fill();
-  canvasTrianglePath({
-    targetCanvas: detached,
-    width: triangleSize.width,
-    height: triangleSize.height,
-    startCoord: centerPoint,
-  });
-  detachedCtx.fill();
-
-  ctx.shadowColor = 'rgba(0,0,0,0.25)';
-  ctx.shadowBlur = 12;
-  ctx.drawImage(detached, 0, 0);
-
-  ctx.shadowBlur = 0;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillStyle = 'black';
-  ctx.fillText(
-    `${selected.percentage}%`,
-    centerPoint.x,
-    centerPoint.y + triangleSize.height + modalSize.height / 2
-  );
+  return selectTarget !== undefined ? selectTarget : null;
 };
