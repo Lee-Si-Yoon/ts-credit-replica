@@ -1,5 +1,6 @@
 import React from 'react';
 import { scaleCanvas, setCanvasSize } from '@utils/canvas/canvasDimensions';
+import { clearCanvas } from '@utils/canvas/clearCanvas';
 import { css } from '@emotion/react';
 import { pallete } from './colorPallete';
 import { mockData } from './mockData';
@@ -95,12 +96,10 @@ export default function CreditCardBilling({
         });
 
         if (selected === null) {
-          const ctx = popoverCanvasRef.current.getContext('2d');
-          const dimensions = containerRef.current.getBoundingClientRect();
-
-          if (ctx !== null) {
-            ctx.clearRect(0, 0, dimensions.width, dimensions.height);
-          }
+          clearCanvas({
+            container: containerRef.current,
+            targetCanvas: popoverCanvasRef.current,
+          });
         } else {
           drawPopover({
             selected,
@@ -165,6 +164,9 @@ const getCoordinatesAndPercentages = ({
       accumulativeValue * (datum.value / accumulativeValue) * reRangedXMaxRatio;
     const start = i === 0 ? rectStart : rectStart + padding / 2;
     const end = rectStart + width - paddingAdjustment;
+    const percentage = parseFloat(
+      ((datum.value / accumulativeValue) * 100).toFixed(1)
+    );
     withCoordinates.push({
       ...datum,
       x: { start, end },
@@ -172,9 +174,7 @@ const getCoordinatesAndPercentages = ({
         start: margin.top,
         end: yMax - margin.top - margin.bottom,
       },
-      percentage: parseFloat(
-        ((datum.value / accumulativeValue) * 100).toFixed(1)
-      ),
+      percentage,
     });
     rectStart = end + paddingAdjustment;
   });
@@ -213,7 +213,6 @@ const drawChart = ({
 
   withCoordinates.forEach((datum, i) => {
     const { x, y } = datum;
-    ctx.save();
 
     if (i === 0 || i === withCoordinates.length - 1) {
       ctx.fillStyle = `${colorPallete[datum.category]}`;
@@ -222,8 +221,6 @@ const drawChart = ({
       ctx.fillStyle = `${pallete[datum.category]}`;
       ctx.fillRect(x.start, y.start, x.end - x.start, y.end);
     }
-
-    ctx.restore();
   });
 };
 
@@ -283,10 +280,9 @@ const drawPopover = ({
   modalSize?: Size;
   triangleSize?: Size;
 }) => {
+  clearCanvas({ container: containerRef, targetCanvas: canvasRef });
   const ctx = canvasRef.getContext('2d');
-  const container = containerRef.getBoundingClientRect();
   if (ctx === null) return;
-  ctx.clearRect(0, 0, container.width, container.height);
   const centerPoint = {
     x: selected.x.start + (selected.x.end - selected.x.start) / 2,
     y: selected.y.start + selected.y.end / 2,
