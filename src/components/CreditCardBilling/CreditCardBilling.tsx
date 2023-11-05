@@ -1,6 +1,7 @@
 import React from 'react';
 import { scaleCanvas, setCanvasSize } from '@utils/canvas/canvasDimensions';
 import { clearCanvas } from '@utils/canvas/clearCanvas';
+import { roundRect } from '@utils/canvas/shapes/roundRect';
 import { css } from '@emotion/react';
 import { pallete } from './colorPallete';
 import { mockData } from './mockData';
@@ -30,12 +31,12 @@ const Canvas = css`
   pointerevents: none;
 `;
 
-// const roundRectRadii = 12;
+const roundRectRadii = 6;
 const defaultMargins = {
   top: 40,
   bottom: 40,
-  left: 0,
-  right: 0,
+  left: 20,
+  right: 20,
 };
 
 export default function CreditCardBilling({
@@ -241,7 +242,20 @@ const drawChart = ({
 
     if (i === 0 || i === withCoordinates.length - 1) {
       ctx.fillStyle = `${colorPallete[datum.category]}`;
-      ctx.fillRect(x.start, y.start, x.end - x.start, y.end);
+      roundRect({
+        targetCanvas: canvasRef,
+        x: x.start,
+        y: y.start,
+        w: x.end - x.start,
+        h: y.end,
+        radius: {
+          topLeft: i === 0 ? roundRectRadii : 0,
+          bottomLeft: i === 0 ? roundRectRadii : 0,
+          topRight: i === withCoordinates.length - 1 ? roundRectRadii : 0,
+          bottomRight: i === withCoordinates.length - 1 ? roundRectRadii : 0,
+        },
+      });
+      ctx.fill();
     } else {
       ctx.fillStyle = `${pallete[datum.category]}`;
       ctx.fillRect(x.start, y.start, x.end - x.start, y.end);
@@ -317,9 +331,24 @@ const drawPopover = ({
   ctx.globalAlpha = opacity;
   ctx.fillStyle = 'white';
   ctx.shadowColor = 'rgba(0,0,0,0.2)';
-  ctx.shadowBlur = 6;
-  ctx.shadowOffsetX = 6;
-  ctx.shadowOffsetY = 6;
+  ctx.shadowBlur = 12;
+
+  roundRect({
+    targetCanvas: canvasRef,
+    x: centerPoint.x - modalSize.width / 2,
+    y: centerPoint.y + triangleSize.height,
+    w: modalSize.width,
+    h: modalSize.height,
+    radius: {
+      topLeft: 12,
+      bottomLeft: 12,
+      topRight: 12,
+      bottomRight: 12,
+    },
+  });
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
   ctx.beginPath();
   ctx.moveTo(centerPoint.x, centerPoint.y);
   ctx.lineTo(
@@ -331,19 +360,10 @@ const drawPopover = ({
     centerPoint.y + triangleSize.height
   );
   ctx.fill();
-  ctx.fillRect(
-    centerPoint.x - modalSize.width / 2,
-    centerPoint.y + triangleSize.height,
-    modalSize.width,
-    modalSize.height
-  );
 
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = 'black';
-  ctx.shadowBlur = 0;
-  ctx.shadowOffsetX = 0;
-  ctx.shadowOffsetY = 0;
   ctx.fillText(
     `${selected.percentage}%`,
     centerPoint.x,
