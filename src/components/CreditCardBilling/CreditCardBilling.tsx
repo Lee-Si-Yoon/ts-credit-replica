@@ -44,19 +44,29 @@ export default function CreditCardBilling({
   margin = defaultMargins,
 }: CreditCardBillingProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const chartCanvasRef = React.useRef<HTMLCanvasElement>(null);
+  const popoverCanvasRef = React.useRef<HTMLCanvasElement>(null);
 
   React.useEffect(() => {
     const handleResize = () => {
-      if (canvasRef.current !== null && containerRef.current !== null) {
+      if (
+        chartCanvasRef.current !== null &&
+        containerRef.current !== null &&
+        popoverCanvasRef.current !== null
+      ) {
         setCanvasSize({
-          canvasRef: canvasRef.current,
+          canvasRef: chartCanvasRef.current,
           containerRef: containerRef.current,
         });
-        scaleCanvas({ canvasRef: canvasRef.current });
+        setCanvasSize({
+          canvasRef: popoverCanvasRef.current,
+          containerRef: containerRef.current,
+        });
+        scaleCanvas({ canvasRef: chartCanvasRef.current });
+        scaleCanvas({ canvasRef: popoverCanvasRef.current });
         drawChart({
           data,
-          canvasRef: canvasRef.current,
+          canvasRef: chartCanvasRef.current,
           containerRef: containerRef.current,
           colorPallete: pallete,
           padding: 4,
@@ -75,7 +85,7 @@ export default function CreditCardBilling({
 
   React.useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (containerRef.current !== null && canvasRef.current !== null) {
+      if (containerRef.current !== null && popoverCanvasRef.current !== null) {
         const selected = selectDatum({
           e,
           data,
@@ -84,8 +94,19 @@ export default function CreditCardBilling({
           margin,
         });
 
-        if (selected !== null) {
-          drawPopover({ selected, canvasRef: canvasRef.current });
+        if (selected === null) {
+          const ctx = popoverCanvasRef.current.getContext('2d');
+          const dimensions = containerRef.current.getBoundingClientRect();
+
+          if (ctx !== null) {
+            ctx.clearRect(0, 0, dimensions.width, dimensions.height);
+          }
+        } else {
+          drawPopover({
+            selected,
+            canvasRef: popoverCanvasRef.current,
+            containerRef: containerRef.current,
+          });
         }
       }
     };
@@ -104,7 +125,8 @@ export default function CreditCardBilling({
       css={Container}
       style={{ width, height }}
     >
-      <canvas ref={canvasRef} css={Canvas} />
+      <canvas ref={chartCanvasRef} css={Canvas} />
+      <canvas ref={popoverCanvasRef} css={Canvas} />
     </div>
   );
 }
@@ -229,9 +251,6 @@ const selectDatum = ({
     margin,
   });
   const selectTarget = withCoordinates.find((datum) => {
-    console.log(e.clientY - containerDimension.top);
-    console.log(datum.y);
-
     if (
       e.clientX >= datum.x.start &&
       e.clientX <= datum.x.end &&
@@ -253,17 +272,21 @@ const selectDatum = ({
 
 const drawPopover = ({
   canvasRef,
+  containerRef,
   selected,
   modalSize = { width: 50, height: 30 },
   triangleSize = { width: 20, height: 10 },
 }: {
   canvasRef: HTMLCanvasElement;
+  containerRef: HTMLDivElement;
   selected: CreditCardBillingWithCoords;
   modalSize?: Size;
   triangleSize?: Size;
 }) => {
   const ctx = canvasRef.getContext('2d');
+  const container = containerRef.getBoundingClientRect();
   if (ctx === null) return;
+  ctx.clearRect(0, 0, container.width, container.height);
   const centerPoint = {
     x: selected.x.start + (selected.x.end - selected.x.start) / 2,
     y: selected.y.start + selected.y.end / 2,
