@@ -25,5 +25,6 @@ module.exports = {
         '^(?!index.tsx?$).+.tsx$': 'PascalCase',
       },
     ],
+    '@typescript-eslint/no-use-before-define': 'warn',
   },
 };
