@@ -27,7 +27,7 @@ const Canvas = css`
   pointerevents: none;
 `;
 
-const roundRectRadii = 12;
+// const roundRectRadii = 12;
 
 export default function CreditCardBilling({
   data = mockData,
@@ -36,8 +36,6 @@ export default function CreditCardBilling({
 }: CreditCardBillingProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const [selectedDatum, setSelectedDatum] =
-    React.useState<CreditCardBilling | null>(null);
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -67,14 +65,17 @@ export default function CreditCardBilling({
 
   React.useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (containerRef.current !== null) {
-        selectDatum({
+      if (containerRef.current !== null && canvasRef.current !== null) {
+        const selected = selectDatum({
           e,
           data,
           containerRef: containerRef.current,
           padding: 4,
-          setter: setSelectedDatum,
         });
+
+        if (selected !== null) {
+          drawPopover({ selected, canvasRef: canvasRef.current });
+        }
       }
     };
 
@@ -84,10 +85,6 @@ export default function CreditCardBilling({
       window.removeEventListener('click', handleClick);
     };
   }, [data]);
-
-  React.useEffect(() => {
-    console.log(selectedDatum);
-  }, [selectedDatum]);
 
   return (
     <div
@@ -177,15 +174,15 @@ const drawChart = ({
     ctx.save();
 
     if (i === 0 || i === withCoordinates.length - 1) {
-      ctx.roundRect(x.start, 0, x.end - x.start, height, [
-        i === 0 ? roundRectRadii : 0,
-        i === withCoordinates.length - 1 ? roundRectRadii : 0,
-        i === withCoordinates.length - 1 ? roundRectRadii : 0,
-        i === 0 ? roundRectRadii : 0,
-      ]);
-      // FIXME: fillStyle does not apply differently on every traversal
       ctx.fillStyle = `${colorPallete[datum.category]}`;
-      ctx.fill();
+      ctx.fillRect(x.start, 0, x.end - x.start, height);
+      // FIXME: draw rounded rect
+      // , [
+      //   i === 0 ? roundRectRadii : 0,
+      //   i === withCoordinates.length - 1 ? roundRectRadii : 0,
+      //   i === withCoordinates.length - 1 ? roundRectRadii : 0,
+      //   i === 0 ? roundRectRadii : 0,
+      // ]
     } else {
       ctx.fillStyle = `${pallete[datum.category]}`;
       ctx.fillRect(x.start, 0, x.end - x.start, height);
@@ -200,13 +197,11 @@ const selectDatum = ({
   containerRef,
   data,
   padding,
-  setter,
 }: {
   e: MouseEvent;
   containerRef: HTMLDivElement;
   data: Record<'data', CreditCardBilling[]>;
   padding: number;
-  setter: (value: CreditCardBilling | null) => void;
 }) => {
   const containerDimension = containerRef.getBoundingClientRect();
   const withCoordinates = getCoordinatesAndPercentages({
@@ -231,8 +226,52 @@ const selectDatum = ({
   });
 
   if (selectTarget !== undefined) {
-    setter(selectTarget);
+    return selectTarget;
   } else {
-    setter(null);
+    return null;
   }
+};
+
+const drawPopover = ({
+  canvasRef,
+  selected,
+}: {
+  canvasRef: HTMLCanvasElement;
+  selected: CreditCardBillingWithCoords;
+}) => {
+  const ctx = canvasRef.getContext('2d');
+  if (ctx === null) return;
+  const modalWidth = 50;
+  const modalHeight = 50;
+  const triangleWidth = 20;
+  const triangleHeight = 10;
+  const centerPoint = {
+    x: selected.x.start + (selected.x.end - selected.x.start) / 2,
+    y: selected.height / 2,
+  };
+  ctx.fillStyle = 'white';
+  ctx.shadowColor = 'black';
+  ctx.shadowBlur = 6;
+  ctx.shadowOffsetX = 6;
+  ctx.shadowOffsetY = 6;
+  ctx.beginPath();
+  ctx.moveTo(centerPoint.x, centerPoint.y);
+  ctx.lineTo(centerPoint.x + triangleWidth / 2, centerPoint.y + triangleHeight);
+  ctx.lineTo(centerPoint.x - triangleWidth / 2, centerPoint.y + triangleHeight);
+  ctx.fill();
+  ctx.fillRect(
+    centerPoint.x - modalWidth / 2,
+    centerPoint.y + triangleHeight,
+    modalWidth,
+    modalHeight
+  );
+
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = 'black';
+  ctx.fillText(
+    `${selected.percentage}`,
+    centerPoint.x,
+    centerPoint.y + triangleHeight + modalHeight / 2
+  );
 };
