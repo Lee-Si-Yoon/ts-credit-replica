@@ -1,7 +1,6 @@
 import React from 'react';
 import { scaleCanvas, setCanvasSize } from '@utils/canvas/canvasDimensions';
 import { clearCanvas } from '@utils/canvas/clearCanvas';
-import { canvasRoundRectPath } from '@utils/canvas/shapes/roundRect';
 import { css } from '@emotion/react';
 import { pallete } from './colorPallete';
 import { mockData } from './mockData';
@@ -246,19 +245,12 @@ const drawChart = ({
 
     if (i === 0 || i === withCoordinates.length - 1) {
       ctx.fillStyle = `${colorPallete[datum.category]}`;
-      canvasRoundRectPath({
-        targetCanvas: canvasRef,
-        x: x.start,
-        y: y.start,
-        w: x.end - x.start,
-        h: y.end,
-        radius: {
-          topLeft: i === 0 ? roundRectRadii : 0,
-          bottomLeft: i === 0 ? roundRectRadii : 0,
-          topRight: i === withCoordinates.length - 1 ? roundRectRadii : 0,
-          bottomRight: i === withCoordinates.length - 1 ? roundRectRadii : 0,
-        },
-      });
+      ctx.roundRect(x.start, y.start, x.end - x.start, y.end, [
+        i === 0 ? roundRectRadii : 0,
+        i === withCoordinates.length - 1 ? roundRectRadii : 0,
+        i === withCoordinates.length - 1 ? roundRectRadii : 0,
+        i === 0 ? roundRectRadii : 0,
+      ]);
       ctx.fill();
     } else {
       ctx.fillStyle = `${pallete[datum.category]}`;

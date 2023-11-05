@@ -1,4 +1,3 @@
-import { canvasRoundRectPath } from '@utils/canvas/shapes/roundRect';
 import { canvasTrianglePath } from '@utils/canvas/shapes/triangle';
 import type { CreditCardBillingWithCoords } from './CreditCardBilling';
 import type { Size } from './types';
@@ -31,19 +30,13 @@ export const drawPopover = ({
     x: selected.x.start + (selected.x.end - selected.x.start) / 2,
     y: selected.y.start + selected.y.end / 2,
   };
-  canvasRoundRectPath({
-    targetCanvas: detached,
-    x: centerPoint.x - modalSize.width / 2,
-    y: centerPoint.y + triangleSize.height,
-    w: modalSize.width,
-    h: modalSize.height,
-    radius: {
-      topLeft: 12,
-      bottomLeft: 12,
-      topRight: 12,
-      bottomRight: 12,
-    },
-  });
+  detachedCtx.roundRect(
+    centerPoint.x - modalSize.width / 2,
+    centerPoint.y + triangleSize.height,
+    modalSize.width,
+    modalSize.height,
+    12
+  );
   detachedCtx.fill();
   canvasTrianglePath({
     targetCanvas: detached,
