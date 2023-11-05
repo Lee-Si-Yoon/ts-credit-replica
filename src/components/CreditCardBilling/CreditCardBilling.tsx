@@ -36,8 +36,10 @@ export default function CreditCardBilling({
 }: CreditCardBillingProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const [selectedDatum, setSelectedDatum] =
+    React.useState<CreditCardBilling | null>(null);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     const handleResize = () => {
       if (canvasRef.current !== null && containerRef.current !== null) {
         setCanvasSize({
@@ -50,6 +52,7 @@ export default function CreditCardBilling({
           canvasRef: canvasRef.current,
           containerRef: containerRef.current,
           colorPallete: pallete,
+          padding: 4,
         });
       }
     };
@@ -62,8 +65,37 @@ export default function CreditCardBilling({
     };
   }, [data]);
 
+  React.useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (containerRef.current !== null) {
+        selectDatum({
+          e,
+          data,
+          containerRef: containerRef.current,
+          padding: 4,
+          setter: setSelectedDatum,
+        });
+      }
+    };
+
+    window.addEventListener('click', handleClick);
+
+    return () => {
+      window.removeEventListener('click', handleClick);
+    };
+  }, [data]);
+
+  React.useEffect(() => {
+    console.log(selectedDatum);
+  }, [selectedDatum]);
+
   return (
-    <div ref={containerRef} css={Container} style={{ width, height }}>
+    <div
+      role="presentation"
+      ref={containerRef}
+      css={Container}
+      style={{ width, height }}
+    >
       <canvas ref={canvasRef} css={Canvas} />
     </div>
   );
@@ -161,4 +193,46 @@ const drawChart = ({
 
     ctx.restore();
   });
+};
+
+const selectDatum = ({
+  e,
+  containerRef,
+  data,
+  padding,
+  setter,
+}: {
+  e: MouseEvent;
+  containerRef: HTMLDivElement;
+  data: Record<'data', CreditCardBilling[]>;
+  padding: number;
+  setter: (value: CreditCardBilling | null) => void;
+}) => {
+  const containerDimension = containerRef.getBoundingClientRect();
+  const withCoordinates = getCoordinatesAndPercentages({
+    data: data.data.sort((a, b) => {
+      return b.value - a.value;
+    }),
+    xMax: containerDimension.width,
+    yMax: containerDimension.height,
+    padding,
+  });
+  const selectTarget = withCoordinates.find((datum) => {
+    if (
+      e.clientX >= datum.x.start &&
+      e.clientX <= datum.x.end &&
+      e.clientY <= containerDimension.top + datum.height &&
+      e.clientY >= containerDimension.top
+    ) {
+      return true;
+    }
+
+    return false;
+  });
+
+  if (selectTarget !== undefined) {
+    setter(selectTarget);
+  } else {
+    setter(null);
+  }
 };
