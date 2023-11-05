@@ -3,6 +3,7 @@ import { scaleCanvas, setCanvasSize } from '@utils/canvas/canvasDimensions';
 import { css } from '@emotion/react';
 import { pallete } from './colorPallete';
 import { mockData } from './mockData';
+import type { Size } from './types';
 
 export type Category = 'shopping' | 'transfer' | 'food';
 
@@ -235,16 +236,16 @@ const selectDatum = ({
 const drawPopover = ({
   canvasRef,
   selected,
+  modalSize = { width: 50, height: 50 },
+  triangleSize = { width: 20, height: 10 },
 }: {
   canvasRef: HTMLCanvasElement;
   selected: CreditCardBillingWithCoords;
+  modalSize?: Size;
+  triangleSize?: Size;
 }) => {
   const ctx = canvasRef.getContext('2d');
   if (ctx === null) return;
-  const modalWidth = 50;
-  const modalHeight = 50;
-  const triangleWidth = 20;
-  const triangleHeight = 10;
   const centerPoint = {
     x: selected.x.start + (selected.x.end - selected.x.start) / 2,
     y: selected.height / 2,
@@ -256,22 +257,28 @@ const drawPopover = ({
   ctx.shadowOffsetY = 6;
   ctx.beginPath();
   ctx.moveTo(centerPoint.x, centerPoint.y);
-  ctx.lineTo(centerPoint.x + triangleWidth / 2, centerPoint.y + triangleHeight);
-  ctx.lineTo(centerPoint.x - triangleWidth / 2, centerPoint.y + triangleHeight);
+  ctx.lineTo(
+    centerPoint.x + triangleSize.width / 2,
+    centerPoint.y + triangleSize.height
+  );
+  ctx.lineTo(
+    centerPoint.x - triangleSize.width / 2,
+    centerPoint.y + triangleSize.height
+  );
   ctx.fill();
   ctx.fillRect(
-    centerPoint.x - modalWidth / 2,
-    centerPoint.y + triangleHeight,
-    modalWidth,
-    modalHeight
+    centerPoint.x - modalSize.width / 2,
+    centerPoint.y + triangleSize.height,
+    modalSize.width,
+    modalSize.height
   );
 
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = 'black';
   ctx.fillText(
-    `${selected.percentage}`,
+    `${selected.percentage}%`,
     centerPoint.x,
-    centerPoint.y + triangleHeight + modalHeight / 2
+    centerPoint.y + triangleSize.height + modalSize.height / 2
   );
 };
