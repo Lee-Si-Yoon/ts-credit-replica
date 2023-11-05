@@ -1,32 +1,15 @@
 import React from 'react';
 import { scaleCanvas, setCanvasSize } from '@utils/canvas/canvasDimensions';
 import { css } from '@emotion/react';
-import { amber, indigo, tomato } from '@radix-ui/colors';
+import { pallete } from './colorPallete';
+import { mockData } from './mockData';
 
-type Category = 'shopping' | 'transfer' | 'food';
+export type Category = 'shopping' | 'transfer' | 'food';
 
-interface CreditCardBilling {
+export interface CreditCardBilling {
   category: Category;
   value: number;
 }
-
-const mockData: Record<'data', CreditCardBilling[]> = {
-  data: [
-    { category: 'shopping', value: 791 },
-    { category: 'transfer', value: 216 },
-    { category: 'food', value: 450 },
-  ],
-};
-
-type CreditCardBillingPallete = {
-  [key in Category]: React.CSSProperties['color'];
-};
-
-const pallete: CreditCardBillingPallete = {
-  shopping: tomato.tomato9,
-  transfer: indigo.indigo9,
-  food: amber.amber9,
-};
 
 interface CreditCardBillingProps {
   width: React.CSSProperties['width'];
