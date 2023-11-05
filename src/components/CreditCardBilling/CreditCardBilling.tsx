@@ -33,9 +33,9 @@ const Canvas = css`
 // const roundRectRadii = 12;
 const defaultMargins = {
   top: 40,
-  bottom: 20,
-  left: 20,
-  right: 20,
+  bottom: 40,
+  left: 0,
+  right: 0,
 };
 
 export default function CreditCardBilling({
@@ -47,6 +47,7 @@ export default function CreditCardBilling({
   const containerRef = React.useRef<HTMLDivElement>(null);
   const chartCanvasRef = React.useRef<HTMLCanvasElement>(null);
   const popoverCanvasRef = React.useRef<HTMLCanvasElement>(null);
+  const popoverRAFID = React.useRef<number>(0);
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -101,11 +102,34 @@ export default function CreditCardBilling({
             targetCanvas: popoverCanvasRef.current,
           });
         } else {
-          drawPopover({
-            selected,
-            canvasRef: popoverCanvasRef.current,
-            containerRef: containerRef.current,
-          });
+          const popoverDuration = 500;
+          const popoverAnimationStart = performance.now();
+
+          const animatePopover = (timeStamp: number) => {
+            const elapsed = timeStamp - popoverAnimationStart;
+            const progress = Math.min(elapsed / popoverDuration, 1);
+            const opacity = progress > 0 ? progress : 0;
+
+            if (
+              containerRef.current !== null &&
+              popoverCanvasRef.current !== null
+            ) {
+              drawPopover({
+                canvasRef: popoverCanvasRef.current,
+                containerRef: containerRef.current,
+                selected,
+                opacity,
+              });
+            }
+
+            if (progress < 1) {
+              requestAnimationFrame(animatePopover);
+            } else {
+              cancelAnimationFrame(popoverRAFID.current);
+            }
+          };
+
+          popoverRAFID.current = requestAnimationFrame(animatePopover);
         }
       }
     };
@@ -114,6 +138,7 @@ export default function CreditCardBilling({
 
     return () => {
       window.removeEventListener('click', handleClick);
+      cancelAnimationFrame(popoverRAFID.current);
     };
   }, [data, margin]);
 
@@ -271,12 +296,14 @@ const drawPopover = ({
   canvasRef,
   containerRef,
   selected,
+  opacity,
   modalSize = { width: 50, height: 30 },
   triangleSize = { width: 20, height: 10 },
 }: {
   canvasRef: HTMLCanvasElement;
   containerRef: HTMLDivElement;
   selected: CreditCardBillingWithCoords;
+  opacity: number;
   modalSize?: Size;
   triangleSize?: Size;
 }) => {
@@ -287,8 +314,9 @@ const drawPopover = ({
     x: selected.x.start + (selected.x.end - selected.x.start) / 2,
     y: selected.y.start + selected.y.end / 2,
   };
+  ctx.globalAlpha = opacity;
   ctx.fillStyle = 'white';
-  ctx.shadowColor = 'black';
+  ctx.shadowColor = 'rgba(0,0,0,0.2)';
   ctx.shadowBlur = 6;
   ctx.shadowOffsetX = 6;
   ctx.shadowOffsetY = 6;
