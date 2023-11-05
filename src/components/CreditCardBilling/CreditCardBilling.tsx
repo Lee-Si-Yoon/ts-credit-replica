@@ -1,7 +1,8 @@
 import React from 'react';
 import { scaleCanvas, setCanvasSize } from '@utils/canvas/canvasDimensions';
 import { clearCanvas } from '@utils/canvas/clearCanvas';
-import { roundRect } from '@utils/canvas/shapes/roundRect';
+import { canvasRoundRectPath } from '@utils/canvas/shapes/roundRect';
+import { canvasTrianglePath } from '@utils/canvas/shapes/triangle';
 import { css } from '@emotion/react';
 import { pallete } from './colorPallete';
 import { mockData } from './mockData';
@@ -242,7 +243,7 @@ const drawChart = ({
 
     if (i === 0 || i === withCoordinates.length - 1) {
       ctx.fillStyle = `${colorPallete[datum.category]}`;
-      roundRect({
+      canvasRoundRectPath({
         targetCanvas: canvasRef,
         x: x.start,
         y: y.start,
@@ -323,18 +324,22 @@ const drawPopover = ({
 }) => {
   clearCanvas({ container: containerRef, targetCanvas: canvasRef });
   const ctx = canvasRef.getContext('2d');
-  if (ctx === null) return;
+  // to separate shadow and filled paths clone the canvas and apply drawImage
+  const detached = canvasRef.cloneNode() as HTMLCanvasElement;
+  const detachedCtx = detached.getContext('2d');
+
+  if (ctx === null || detachedCtx === null) return;
+
+  ctx.globalAlpha = opacity;
+  detachedCtx.globalAlpha = opacity;
+  detachedCtx.fillStyle = 'white';
+
   const centerPoint = {
     x: selected.x.start + (selected.x.end - selected.x.start) / 2,
     y: selected.y.start + selected.y.end / 2,
   };
-  ctx.globalAlpha = opacity;
-  ctx.fillStyle = 'white';
-  ctx.shadowColor = 'rgba(0,0,0,0.2)';
-  ctx.shadowBlur = 12;
-
-  roundRect({
-    targetCanvas: canvasRef,
+  canvasRoundRectPath({
+    targetCanvas: detached,
     x: centerPoint.x - modalSize.width / 2,
     y: centerPoint.y + triangleSize.height,
     w: modalSize.width,
@@ -346,21 +351,20 @@ const drawPopover = ({
       bottomRight: 12,
     },
   });
-  ctx.fill();
+  detachedCtx.fill();
+  canvasTrianglePath({
+    targetCanvas: detached,
+    width: triangleSize.width,
+    height: triangleSize.height,
+    startCoord: centerPoint,
+  });
+  detachedCtx.fill();
+
+  ctx.shadowColor = 'rgba(0,0,0,0.25)';
+  ctx.shadowBlur = 12;
+  ctx.drawImage(detached, 0, 0);
 
   ctx.shadowBlur = 0;
-  ctx.beginPath();
-  ctx.moveTo(centerPoint.x, centerPoint.y);
-  ctx.lineTo(
-    centerPoint.x + triangleSize.width / 2,
-    centerPoint.y + triangleSize.height
-  );
-  ctx.lineTo(
-    centerPoint.x - triangleSize.width / 2,
-    centerPoint.y + triangleSize.height
-  );
-  ctx.fill();
-
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = 'black';

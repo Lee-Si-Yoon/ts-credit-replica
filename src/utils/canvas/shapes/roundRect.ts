@@ -14,7 +14,7 @@ interface RoundRectProps {
   radius: Radii;
 }
 
-export const roundRect = ({
+export const canvasRoundRectPath = ({
   targetCanvas,
   x,
   y,
@@ -27,7 +27,7 @@ export const roundRect = ({
   const r = x + w;
   const b = y + h;
   ctx.beginPath();
-  ctx.moveTo(x, y);
+  ctx.moveTo(x + radius.topLeft, y);
   ctx.lineTo(r - radius.topRight, y);
   ctx.quadraticCurveTo(r, y, r, y + radius.topRight);
   ctx.lineTo(r, y + h - radius.bottomRight);
@@ -36,5 +36,5 @@ export const roundRect = ({
   ctx.quadraticCurveTo(x, b, x, b - radius.bottomLeft);
   ctx.lineTo(x, y + radius.topLeft);
   ctx.quadraticCurveTo(x, y, x + radius.topLeft, y);
-  ctx.fill();
+  ctx.closePath();
 };
