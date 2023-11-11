@@ -8,6 +8,7 @@ module.exports = {
     'eslint-config-siyoon/imports',
     'eslint-config-siyoon/react',
     'eslint-config-siyoon/prettier',
+    'plugin:storybook/recommended',
   ],
   plugins: ['filename-rules'],
   parserOptions: {
