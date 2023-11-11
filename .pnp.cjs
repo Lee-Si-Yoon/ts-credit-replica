@@ -55,6 +55,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vitejs/plugin-react-swc", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:3.4.1"],\
             ["@yarnpkg/sdks", "npm:3.0.0"],\
             ["axios", "npm:1.6.0"],\
+            ["chromatic", "npm:9.0.0"],\
             ["eslint", "npm:8.52.0"],\
             ["eslint-config-siyoon", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:1.0.1-beta.3"],\
             ["eslint-plugin-filename-rules", "npm:1.3.1"],\
@@ -8852,6 +8853,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["chromatic", [\
+        ["npm:9.0.0", {\
+          "packageLocation": "./.yarn/cache/chromatic-npm-9.0.0-aa00866eae-4bc3b361e0.zip/node_modules/chromatic/",\
+          "packageDependencies": [\
+            ["chromatic", "npm:9.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["ci-info", [\
         ["npm:3.9.0", {\
           "packageLocation": "./.yarn/cache/ci-info-npm-3.9.0-646784ca0e-6b19dc9b29.zip/node_modules/ci-info/",\
@@ -16454,6 +16464,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@vitejs/plugin-react-swc", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:3.4.1"],\
             ["@yarnpkg/sdks", "npm:3.0.0"],\
             ["axios", "npm:1.6.0"],\
+            ["chromatic", "npm:9.0.0"],\
             ["eslint", "npm:8.52.0"],\
             ["eslint-config-siyoon", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:1.0.1-beta.3"],\
             ["eslint-plugin-filename-rules", "npm:1.3.1"],\
