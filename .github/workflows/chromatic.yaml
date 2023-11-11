@@ -38,7 +38,7 @@ jobs:
             ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-
 
       - name: Install dependencies
-        run: yarn install
+        run: CI=true yarn install
 
       - name: Publish to Chromatic
         uses: chromaui/action@v1
