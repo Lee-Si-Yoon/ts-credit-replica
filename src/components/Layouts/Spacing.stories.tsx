@@ -16,7 +16,6 @@ export const Spacing: Story = {
     (Story) => {
       return (
         <>
-          <i>vertcal spacing</i>
           <div style={{ backgroundColor: 'black', height: '50px' }} />
           <Story />
           <div style={{ backgroundColor: 'black', height: '50px' }} />
