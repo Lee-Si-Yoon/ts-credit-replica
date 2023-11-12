@@ -2,7 +2,6 @@ name: 'Chromatic'
 
 on:
   push:
-  pull_request:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -25,7 +24,16 @@ jobs:
       - name: Install dependencies
         run: CI=true yarn install
 
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**'
+
       - name: Publish to Chromatic
+        id: chromatic
+        if: steps.changes.outputs.src == 'true'
         uses: chromaui/action@v1
         env:
           LOG_LEVEL: 'error'
@@ -37,3 +45,15 @@ jobs:
           untraced: package.json,yarn.lock
           exitZeroOnChanges: true
           exitOnceUploaded: true
+
+      - name: Comment Chromatic results
+        if: steps.changes.outputs.src == 'true'
+        uses: thollander/actions-comment-pull-request@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          message: |
+            Chromatic has updates:
+            | URL | Consumed snapshot | 
+            | -- | -- |
+            | ${{ steps.chromatic.outputs.storybookUrl }} | ${{ steps.chromatic.outputs.actualCaptureCount }} (skipped: ${{ steps.chromatic.outputs.inheritedCaptureCount }}) |
