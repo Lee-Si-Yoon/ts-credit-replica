@@ -32,6 +32,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@emotion/babel-plugin", "npm:11.11.0"],\
             ["@emotion/react", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:11.11.1"],\
+            ["@emotion/serialize", "npm:1.1.2"],\
             ["@radix-ui/colors", "npm:3.0.0"],\
             ["@radix-ui/react-icons", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:1.3.0"],\
             ["@storybook/addon-essentials", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:7.5.3"],\
@@ -16441,6 +16442,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-credit-replica", "workspace:."],\
             ["@emotion/babel-plugin", "npm:11.11.0"],\
             ["@emotion/react", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:11.11.1"],\
+            ["@emotion/serialize", "npm:1.1.2"],\
             ["@radix-ui/colors", "npm:3.0.0"],\
             ["@radix-ui/react-icons", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:1.3.0"],\
             ["@storybook/addon-essentials", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:7.5.3"],\
