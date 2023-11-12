@@ -1,0 +1,59 @@
+name: 'Chromatic'
+
+on:
+  push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  chromatic-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.16.x'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: CI=true yarn install
+
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**'
+
+      - name: Publish to Chromatic
+        id: chromatic
+        if: steps.changes.outputs.src == 'true'
+        uses: chromaui/action@v1
+        env:
+          LOG_LEVEL: 'error'
+        # Chromatic GitHub Action options
+        with:
+          # 👇 Chromatic projectToken, refer to the manage page to obtain it.
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          onlyChanged: true
+          untraced: package.json,yarn.lock
+          exitZeroOnChanges: true
+          exitOnceUploaded: true
+
+      - name: Comment Chromatic results
+        if: steps.changes.outputs.src == 'true'
+        uses: thollander/actions-comment-pull-request@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          message: |
+            Chromatic has updates:
+            | URL | Consumed snapshot | 
+            | -- | -- |
+            | ${{ steps.chromatic.outputs.storybookUrl }} | ${{ steps.chromatic.outputs.actualCaptureCount }} (skipped: ${{ steps.chromatic.outputs.inheritedCaptureCount }}) |
