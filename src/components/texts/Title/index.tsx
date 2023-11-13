@@ -1,6 +1,7 @@
 import type { OverridableProps, StrictPropsWithChildren } from '@utils/types';
-import { css } from '@emotion/react';
-import type { HeadingElements, TextBaseProps } from './model';
+import { useTheme } from '@emotion/react';
+import type { HeadingElements, TextBaseProps } from '../text.types';
+import { titleStyle } from './styles';
 
 export const DEFAULT_ELEMENT = 'h1' as const;
 
@@ -20,18 +21,16 @@ export default function Title<
   children,
   ...props
 }: TextProps<T>) {
+  const theme = useTheme();
   const Component = as ?? DEFAULT_ELEMENT;
 
   return (
     <Component
-      css={css`
-        display: ${display};
-        font-weight: ${weight};
-        line-height: ${lineHeight};
-        font-size: ${typeof size === 'string' ? size : `${size}px`};
-        color: ${color};
-        text-align: ${align};
-      `}
+      css={titleStyle({
+        as,
+        theme,
+        props: { display, weight, lineHeight, size, color, align },
+      })}
       {...props}
     >
       {children}
