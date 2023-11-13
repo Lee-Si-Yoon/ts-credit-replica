@@ -25,7 +25,7 @@ jobs:
         run: CI=true yarn install
 
       - uses: dorny/paths-filter@v2
-        id: filter
+        id: changes
         with:
           filters: |
             src:
