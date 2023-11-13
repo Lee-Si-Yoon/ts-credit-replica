@@ -1,14 +1,15 @@
-import type { ElementType } from 'react';
-import type { OverridableProps } from '@utils/types';
+import type { OverridableProps, StrictPropsWithChildren } from '@utils/types';
 import { css } from '@emotion/react';
-import type { TextBaseProps } from './model';
+import type { HeadingElements, TextBaseProps } from './model';
 
 export const DEFAULT_ELEMENT = 'h1' as const;
 
-type TextProps<T extends ElementType = typeof DEFAULT_ELEMENT> =
-  OverridableProps<T, TextBaseProps>;
+type TextProps<T extends HeadingElements = typeof DEFAULT_ELEMENT> =
+  OverridableProps<T, StrictPropsWithChildren<TextBaseProps>>;
 
-export default function Title<T extends ElementType = typeof DEFAULT_ELEMENT>({
+export default function Title<
+  T extends HeadingElements = typeof DEFAULT_ELEMENT,
+>({
   display,
   lineHeight,
   weight,

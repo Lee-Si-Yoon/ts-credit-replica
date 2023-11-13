@@ -10,3 +10,7 @@ export type CombineElementProps<
 export type OverridableProps<T extends React.ElementType, K = unknown> = {
   as?: T;
 } & CombineElementProps<T, K>;
+
+export type StrictPropsWithChildren<P = unknown> = P & {
+  children: NonNullable<React.ReactNode>;
+};
