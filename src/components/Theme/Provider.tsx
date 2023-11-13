@@ -4,13 +4,18 @@ import type { Theme } from './theme.types';
 
 export const scale = 1;
 
+const DEFAULT_FONT_FAMILY =
+  '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji';
+
+const MONO_FONT_FAMILY =
+  'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace';
+
 export const theme: Theme = {
   scale,
-  white: 'white',
-  black: 'black',
+  white: '#fff',
+  black: '#000',
   headings: {
-    fontFamily:
-      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial',
+    fontFamily: DEFAULT_FONT_FAMILY,
     fontWeight: '700',
     sizes: {
       h1: {
@@ -39,6 +44,8 @@ export const theme: Theme = {
       },
     },
   },
+  fontFamily: DEFAULT_FONT_FAMILY,
+  fontFamilyMonospace: MONO_FONT_FAMILY,
 };
 
 export function ThemeProvider({ children }: StrictPropsWithChildren) {

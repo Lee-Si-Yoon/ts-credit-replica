@@ -24,4 +24,7 @@ export interface Theme {
       h6: HeadingStyle;
     };
   };
+
+  fontFamily: CSSProperties['fontFamily'];
+  fontFamilyMonospace: CSSProperties['fontFamily'];
 }

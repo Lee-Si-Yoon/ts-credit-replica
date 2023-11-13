@@ -5,22 +5,12 @@ import { titleStyle } from './styles';
 
 export const DEFAULT_ELEMENT = 'h1' as const;
 
-type TextProps<T extends HeadingElements = typeof DEFAULT_ELEMENT> =
+type TitleProps<T extends HeadingElements = typeof DEFAULT_ELEMENT> =
   OverridableProps<T, StrictPropsWithChildren<TextBaseProps>>;
 
 export default function Title<
   T extends HeadingElements = typeof DEFAULT_ELEMENT,
->({
-  display,
-  lineHeight,
-  weight,
-  size,
-  color,
-  align,
-  as,
-  children,
-  ...props
-}: TextProps<T>) {
+>({ as, children, ...props }: TitleProps<T>) {
   const theme = useTheme();
   const Component = as ?? DEFAULT_ELEMENT;
 
@@ -29,7 +19,7 @@ export default function Title<
       css={titleStyle({
         as,
         theme,
-        props: { display, weight, lineHeight, size, color, align },
+        props,
       })}
       {...props}
     >
