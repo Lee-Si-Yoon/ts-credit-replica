@@ -1957,6 +1957,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@faker-js/faker@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "@faker-js/faker@npm:8.2.0"
+  checksum: febc17018acfb841a348591bfe415e815ea981bf7fa0a12670ac2b449479ad7e9e7b130c42878ec30210da964c13a620a3303dc00d63cb13ded00c6fc701e2be
+  languageName: node
+  linkType: hard
+
 "@fal-works/esbuild-plugin-global-externals@npm:^2.1.2":
   version: 2.1.2
   resolution: "@fal-works/esbuild-plugin-global-externals@npm:2.1.2"
@@ -12754,6 +12761,7 @@ __metadata:
     "@emotion/babel-plugin": ^11.11.0
     "@emotion/react": ^11.11.1
     "@emotion/serialize": ^1.1.2
+    "@faker-js/faker": ^8.2.0
     "@radix-ui/colors": ^3.0.0
     "@radix-ui/react-icons": ^1.3.0
     "@storybook/addon-essentials": ^7.5.3
