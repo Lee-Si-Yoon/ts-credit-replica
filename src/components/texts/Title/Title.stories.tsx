@@ -1,6 +1,7 @@
-import { faker } from '@faker-js/faker';
 import type { Meta, StoryObj } from '@storybook/react';
 import TitleComponent from './';
+
+const loremSentence = 'Adopto sursum strues modi ara saepe.';
 
 const meta: Meta<typeof TitleComponent> = {
   component: TitleComponent,
@@ -11,7 +12,7 @@ type Story = StoryObj<typeof TitleComponent>;
 
 export const Title: Story = {
   args: {
-    children: faker.lorem.sentence(),
+    children: loremSentence,
   },
   argTypes: {
     as: {

@@ -1,12 +1,12 @@
 import { css, type Theme } from '@emotion/react';
-import type { TextExtendedProps } from '../text.types';
+import type { TextBaseProps, TruncateDirections } from '../text.types';
 
 interface ThemeTextStyleProps {
   theme: Theme;
   as?: React.ElementType;
 }
 
-function themeTextStyle({ theme, as }: ThemeTextStyleProps) {
+function getThemeTextStyle({ theme, as }: ThemeTextStyleProps) {
   if (as !== undefined) {
     return css`
       font-family: ${theme.fontFamily};
@@ -17,11 +17,11 @@ function themeTextStyle({ theme, as }: ThemeTextStyleProps) {
 }
 
 interface TextStyleProps extends ThemeTextStyleProps {
-  props: TextExtendedProps;
+  props: TextBaseProps;
 }
 
-function textBaseStyle({ props, theme, as }: TextStyleProps) {
-  const themeStyles = themeTextStyle({ theme, as });
+export function getTextBaseStyle({ props, theme, as }: TextStyleProps) {
+  const themeStyles = getThemeTextStyle({ theme, as });
   const { display, weight, lineHeight, size, color, align } = props;
 
   return css`
@@ -35,52 +35,28 @@ function textBaseStyle({ props, theme, as }: TextStyleProps) {
   `;
 }
 
-function inheritedTextStyle(props: TextExtendedProps) {
-  const { inherit } = props;
+export const inheritedTextStyle = css`
+  font-weight: inherit;
+  line-height: inherit;
+  font-size: inherit;
+`;
 
+export function getTruncatedTextStyle(truncate: TruncateDirections) {
   return css`
-    font-weight: ${inherit === true && 'inherit'};
-    line-height: ${inherit === true && 'inherit'};
-    font-size: ${inherit === true && 'inherit'};
-  `;
-}
-
-function truncatedTextStyle(props: TextExtendedProps) {
-  const { truncate } = props;
-
-  return css`
-    overflow: ${truncate !== undefined && 'hidden'};
-    text-overflow: ${truncate !== undefined && 'ellipsis'};
-    white-space: ${truncate !== undefined && 'nowrap'};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     direction: ${truncate === 'start' && 'rtl'};
     text-align: ${truncate === 'start' && 'right'};
   `;
 }
 
-function lineClampedTextStyle(props: TextExtendedProps) {
-  const { lineClamp } = props;
-
+export function getLineClampedTextStyle(lineClamp: number) {
   return css`
     -webkit-line-clamp: ${lineClamp};
-    -webkit-box-orient: ${lineClamp !== undefined && 'vertical'};
-    display: ${lineClamp !== undefined && '-webkit-box'};
-    overflow: ${lineClamp !== undefined && 'hidden'};
-    text-overflow: ${lineClamp !== undefined && 'ellipsis'};
-  `;
-}
-
-export function textStyles({ props, theme, as }: TextStyleProps) {
-  const themeStyles = themeTextStyle({ theme, as });
-  const baseStyles = textBaseStyle({ theme, as, props });
-  const inheritStyles = inheritedTextStyle(props);
-  const truncatedStyles = truncatedTextStyle(props);
-  const lineClampedStyles = lineClampedTextStyle(props);
-
-  return css`
-    ${themeStyles};
-    ${baseStyles};
-    ${inheritStyles};
-    ${truncatedStyles};
-    ${lineClampedStyles};
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
   `;
 }

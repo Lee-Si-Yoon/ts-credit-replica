@@ -1,7 +1,12 @@
 import type { OverridableProps, StrictPropsWithChildren } from '@utils/types';
-import { useTheme } from '@emotion/react';
-import type { TextExtendedProps } from '../text.types';
-import { textStyles } from './styles';
+import { css, useTheme } from '@emotion/react';
+import type { TextBaseProps, TextExtendedProps } from '../text.types';
+import {
+  getLineClampedTextStyle,
+  getTextBaseStyle,
+  getTruncatedTextStyle,
+  inheritedTextStyle,
+} from './styles';
 
 export const DEFAULT_ELEMENT = 'p' as const;
 
@@ -10,12 +15,48 @@ type TextProps<T extends React.ElementType = typeof DEFAULT_ELEMENT> =
 
 export default function Text<
   T extends React.ElementType = typeof DEFAULT_ELEMENT,
->({ as, children, ...props }: TextProps<T>) {
+>({
+  display,
+  weight,
+  lineHeight,
+  size,
+  color,
+  align,
+  inherit,
+  truncate,
+  lineClamp,
+  as,
+  span = false,
+  children,
+  ...props
+}: TextProps<T>) {
   const theme = useTheme();
-  const Component = props.span === true ? 'span' : as ?? DEFAULT_ELEMENT;
+  const Component = span === true ? 'span' : as ?? DEFAULT_ELEMENT;
+  const textBaseProps: TextBaseProps = {
+    display,
+    weight,
+    lineHeight,
+    size,
+    color,
+    align,
+  };
 
   return (
-    <Component css={textStyles({ theme, as: Component, props })} {...props}>
+    <Component
+      css={css`
+        ${getTextBaseStyle({
+          as: Component,
+          theme,
+          props: textBaseProps,
+        })};
+        ${lineClamp !== undefined &&
+        lineClamp > 0 &&
+        getLineClampedTextStyle(lineClamp)};
+        ${truncate !== undefined && getTruncatedTextStyle(truncate)};
+        ${inherit === true && inheritedTextStyle};
+      `}
+      {...props}
+    >
       {children}
     </Component>
   );

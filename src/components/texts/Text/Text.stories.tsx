@@ -1,6 +1,8 @@
-import { faker } from '@faker-js/faker';
 import type { Meta, StoryObj } from '@storybook/react';
 import TextComponent from './';
+
+const loremParagrpah =
+  'Ante succurro audacia suus aufero sui aestivus tempus. Subiungo totam adicio. Quasi usque eius clam caries cavus subiungo. Cui corona venustas virgo bos vomer cunabula deficio. Ultra coepi bardus aperte stillicidium. Condico aetas tempore voco iusto deputo. Validus viriliter volva ventus tenax cupressus vix strenuus cupressus. Acervus venia cornu celer. Alveus theologus vulpes video vesper agnitio apostolus curiositas. Valetudo debilito adflicto dolorem suus utrum theatrum. Tolero adopto compello. Spiritus tenuis coaegresco alter artificiose verbum a conqueror tergum aufero. Ventosus animadverto vito absorbeo decumbo censura autem aufero. Dens perferendis laudantium. Asporto cuius carmen peccatus a sto cometes deduco.';
 
 const meta: Meta<typeof TextComponent> = {
   component: TextComponent,
@@ -11,8 +13,7 @@ type Story = StoryObj<typeof TextComponent>;
 
 export const Text: Story = {
   args: {
-    children: faker.lorem.paragraphs(5),
-    lineClamp: 4,
+    children: loremParagrpah,
   },
   argTypes: {
     span: {
