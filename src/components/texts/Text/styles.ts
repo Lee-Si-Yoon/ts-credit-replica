@@ -1,39 +1,5 @@
-import { css, type Theme } from '@emotion/react';
-import type { TextBaseProps, TruncateDirections } from '../text.types';
-
-interface ThemeTextStyleProps {
-  theme: Theme;
-  as?: React.ElementType;
-}
-
-function getThemeTextStyle({ theme, as }: ThemeTextStyleProps) {
-  if (as !== undefined) {
-    return css`
-      font-family: ${theme.fontFamily};
-    `;
-  } else {
-    return null;
-  }
-}
-
-interface TextStyleProps extends ThemeTextStyleProps {
-  props: TextBaseProps;
-}
-
-export function getTextBaseStyle({ props, theme, as }: TextStyleProps) {
-  const themeStyles = getThemeTextStyle({ theme, as });
-  const { display, weight, lineHeight, size, color, align } = props;
-
-  return css`
-    ${themeStyles};
-    display: ${display};
-    font-weight: ${weight};
-    line-height: ${lineHeight};
-    font-size: ${size};
-    color: ${color};
-    text-align: ${align};
-  `;
-}
+import { css } from '@emotion/react';
+import type { TruncateDirections } from '../text.types';
 
 export const inheritedTextStyle = css`
   font-weight: inherit;

@@ -1,9 +1,9 @@
 import type { OverridableProps, StrictPropsWithChildren } from '@utils/types';
 import { css, useTheme } from '@emotion/react';
+import { getTextBaseStyle, getThemeTextStyle } from '../shared/styles';
 import type { TextBaseProps, TextExtendedProps } from '../text.types';
 import {
   getLineClampedTextStyle,
-  getTextBaseStyle,
   getTruncatedTextStyle,
   inheritedTextStyle,
 } from './styles';
@@ -44,11 +44,8 @@ export default function Text<
   return (
     <Component
       css={css`
-        ${getTextBaseStyle({
-          as: Component,
-          theme,
-          props: textBaseProps,
-        })};
+        ${getThemeTextStyle(theme)};
+        ${getTextBaseStyle(textBaseProps)};
         ${lineClamp !== undefined &&
         lineClamp > 0 &&
         getLineClampedTextStyle(lineClamp)};

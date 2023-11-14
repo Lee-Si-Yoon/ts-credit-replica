@@ -19,3 +19,13 @@ export interface TextExtendedProps extends TextBaseProps {
   inherit?: boolean;
   truncate?: TruncateDirections;
 }
+
+export type MonoElements = 'code' | 'kbd' | 'pre' | 'samp';
+
+export interface MonoExtendedProps extends TextBaseProps {
+  block?: boolean;
+  backgroundColor?: CSSProperties['backgroundColor'];
+  /** TODO inject layout related styling from other interface */
+  padding?: CSSProperties['padding'];
+  borderRadius?: CSSProperties['borderRadius'];
+}
