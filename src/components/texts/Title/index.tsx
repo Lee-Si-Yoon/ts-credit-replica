@@ -1,13 +1,26 @@
-import type { OverridableProps, StrictPropsWithChildren } from '@utils/types';
+import {
+  extractStyleProps,
+  type StyleProps,
+} from '@components/core/extractStyleProps';
+import { parseStyleProps } from '@components/core/parseStyleProps';
+import type { TextBaseProps } from '@components/core/textBaseProps.types';
+import type {
+  Combine,
+  OverridableProps,
+  StrictPropsWithChildren,
+} from '@utils/types';
 import { css, useTheme } from '@emotion/react';
 import { getTextBaseStyle, getThemeTextStyle } from '../shared/styles';
-import type { HeadingElements, TextBaseProps } from '../text.types';
+import type { HeadingElements } from '../text.types';
 import { getThemeTitleStyle } from './styles';
 
 export const DEFAULT_ELEMENT = 'h1' as const;
 
 type TitleProps<T extends HeadingElements = typeof DEFAULT_ELEMENT> =
-  OverridableProps<T, StrictPropsWithChildren<TextBaseProps>>;
+  OverridableProps<
+    T,
+    StrictPropsWithChildren<Combine<TextBaseProps, StyleProps>>
+  >;
 
 export default function Title<
   T extends HeadingElements = typeof DEFAULT_ELEMENT,
@@ -24,7 +37,7 @@ export default function Title<
 }: TitleProps<T>) {
   const theme = useTheme();
   const Component = as ?? DEFAULT_ELEMENT;
-  const textBaseProps: TextBaseProps = {
+  const textBaseProps: Combine<TextBaseProps, StyleProps> = {
     display,
     weight,
     lineHeight,
@@ -32,6 +45,8 @@ export default function Title<
     color,
     align,
   };
+  const { styleProps, rest } = extractStyleProps(props);
+  const parsedStyleProps = parseStyleProps(styleProps);
 
   return (
     <Component
@@ -39,8 +54,10 @@ export default function Title<
         ${getThemeTextStyle(theme)};
         ${getTextBaseStyle(textBaseProps)};
         ${getThemeTitleStyle({ theme, as: Component })};
+        ${JSON.stringify(styleProps)};
+        ${parsedStyleProps};
       `}
-      {...props}
+      {...rest}
     >
       {children}
     </Component>

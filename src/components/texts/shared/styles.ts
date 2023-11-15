@@ -1,5 +1,7 @@
+import type { StyleProps } from '@components/core/extractStyleProps';
+import type { TextBaseProps } from '@components/core/textBaseProps.types';
+import type { Combine } from '@utils/types';
 import { css, type Theme } from '@emotion/react';
-import type { TextBaseProps } from '../text.types';
 
 export function getThemeTextStyle(theme: Theme) {
   return css`
@@ -7,7 +9,7 @@ export function getThemeTextStyle(theme: Theme) {
   `;
 }
 
-export function getTextBaseStyle(props: TextBaseProps) {
+export function getTextBaseStyle(props: Combine<TextBaseProps, StyleProps>) {
   const { display, weight, lineHeight, size, color, align } = props;
 
   return css`

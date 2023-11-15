@@ -1,5 +1,5 @@
+import type { StyleProps } from '@components/core/extractStyleProps';
 import { css, type Theme } from '@emotion/react';
-import type { MonoExtendedProps, TextBaseProps } from '../text.types';
 
 export function getThemeMonoTextStyle(theme: Theme) {
   return css`
@@ -7,9 +7,7 @@ export function getThemeMonoTextStyle(theme: Theme) {
   `;
 }
 
-export const getBaseMonoStyle = (
-  props: Omit<MonoExtendedProps, keyof TextBaseProps>
-) => {
+export const getBaseMonoStyle = (props: StyleProps) => {
   return css`
     margin: 0;
     overflow: auto;
