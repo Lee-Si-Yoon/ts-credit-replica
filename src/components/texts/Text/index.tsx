@@ -1,13 +1,10 @@
+import type { ComponentWithStyleProps } from '@components/core/componentWithStyleProps';
 import {
   extractStyleProps,
   type StyleProps,
 } from '@components/core/extractStyleProps';
 import { parseStyleProps } from '@components/core/parseStyleProps';
-import type {
-  Combine,
-  OverridableProps,
-  StrictPropsWithChildren,
-} from '@utils/types';
+import type { Combine, OverridableProps } from '@utils/types';
 import { css, useTheme } from '@emotion/react';
 import { getTextBaseStyle, getThemeTextStyle } from '../shared/styles';
 import type { TextExtendedProps } from '../text.types';
@@ -20,10 +17,7 @@ import {
 export const DEFAULT_ELEMENT = 'p' as const;
 
 type TextProps<T extends React.ElementType = typeof DEFAULT_ELEMENT> =
-  OverridableProps<
-    T,
-    StrictPropsWithChildren<Combine<TextExtendedProps, StyleProps>>
-  >;
+  OverridableProps<T, ComponentWithStyleProps<TextExtendedProps>>;
 
 export default function Text<
   T extends React.ElementType = typeof DEFAULT_ELEMENT,

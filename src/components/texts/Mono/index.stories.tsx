@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { layoutStylePropsController } from '../../../.storybook/stylePropsController';
 import MonoComponent from './';
 
 const loremCode = "console.log('hello world!')";
@@ -28,5 +29,6 @@ export const Mono: Story = {
     backgroundColor: {
       control: { type: 'color' },
     },
+    ...layoutStylePropsController,
   },
 };

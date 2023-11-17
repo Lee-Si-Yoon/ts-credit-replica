@@ -1,13 +1,11 @@
+import type { ComponentWithStyleProps } from '@components/core/componentWithStyleProps';
 import {
   extractStyleProps,
   type StyleProps,
 } from '@components/core/extractStyleProps';
 import { parseStyleProps } from '@components/core/parseStyleProps';
-import type {
-  Combine,
-  OverridableProps,
-  StrictPropsWithChildren,
-} from '@utils/types';
+import type { TextBaseProps } from '@components/core/textBaseProps.types';
+import type { Combine, OverridableProps } from '@utils/types';
 import { css, useTheme } from '@emotion/react';
 import { getTextBaseStyle } from '../shared/styles';
 import type { MonoElements, MonoExtendedProps } from '../text.types';
@@ -16,10 +14,7 @@ import { getBaseMonoStyle, getThemeMonoTextStyle } from './styles';
 export const DEFAULT_ELEMENT = 'code' as const;
 
 type MonoProps<T extends MonoElements = typeof DEFAULT_ELEMENT> =
-  OverridableProps<
-    T,
-    StrictPropsWithChildren<Combine<MonoExtendedProps, StyleProps>>
-  >;
+  OverridableProps<T, ComponentWithStyleProps<MonoExtendedProps>>;
 
 export default function Mono<T extends MonoElements = typeof DEFAULT_ELEMENT>({
   display,
@@ -38,7 +33,7 @@ export default function Mono<T extends MonoElements = typeof DEFAULT_ELEMENT>({
 }: MonoProps<T>) {
   const theme = useTheme();
   const Component = block === true ? 'pre' : as ?? DEFAULT_ELEMENT;
-  const textBaseProps: Combine<MonoExtendedProps, StyleProps> = {
+  const textBaseProps: Combine<TextBaseProps, StyleProps> = {
     weight,
     lineHeight,
     size,
