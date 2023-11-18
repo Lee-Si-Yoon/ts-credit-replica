@@ -1,4 +1,4 @@
-import type { TextBaseProps } from '@components/core/textBaseProps.types';
+import type { TextBaseProps } from '@components/core/types';
 
 export type HeadingElements = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 

@@ -1,7 +1,6 @@
 import { KeysEnum, StoriesComponentItem } from './utils/types';
 import { generateComponentControl } from '../.storybook/utils/componentControl';
-import type { LayoutStyleProps } from '../components/core/layoutProps.types';
-import type { ShapeStyleProps } from '../components/core/shapeProps.types';
+import { LayoutStyleProps } from '@components/core/types';
 
 export const layoutStylePropsController: KeysEnum<
   LayoutStyleProps,

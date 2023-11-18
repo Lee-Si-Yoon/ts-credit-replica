@@ -390,18 +390,18 @@ async function copyFile(
               fs.constants.COPYFILE_FICLONE
             )
       : linkStrategy !== null
-      ? makeLinkOperation(
-          destinationFs,
-          destination,
-          source,
-          sourceStat,
-          linkStrategy
-        )
-      : async () =>
-          destinationFs.writeFilePromise(
+        ? makeLinkOperation(
+            destinationFs,
             destination,
-            await sourceFs.readFilePromise(source)
-          );
+            source,
+            sourceStat,
+            linkStrategy
+          )
+        : async () =>
+            destinationFs.writeFilePromise(
+              destination,
+              await sourceFs.readFilePromise(source)
+            );
   prelayout.push(async () => op());
   return true;
 }

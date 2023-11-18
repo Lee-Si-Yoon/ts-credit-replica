@@ -1,10 +1,7 @@
-import type { ComponentWithStyleProps } from '@components/core/componentWithStyleProps';
-import {
-  extractStyleProps,
-  type StyleProps,
-} from '@components/core/extractStyleProps';
+import type { ComponentWithStyleProps } from '@components/core/component.type';
+import { extractStyleProps } from '@components/core/extractStyleProps';
 import { parseStyleProps } from '@components/core/parseStyleProps';
-import type { TextBaseProps } from '@components/core/textBaseProps.types';
+import type { StyleProps, TextBaseProps } from '@components/core/types';
 import type { Combine, OverridableProps } from '@utils/types';
 import { css, useTheme } from '@emotion/react';
 import { getTextBaseStyle } from '../shared/styles';
@@ -18,11 +15,11 @@ type MonoProps<T extends MonoElements = typeof DEFAULT_ELEMENT> =
 
 export default function Mono<T extends MonoElements = typeof DEFAULT_ELEMENT>({
   display,
-  weight,
+  fontWeight,
   lineHeight,
-  size,
+  fontSize,
   color,
-  align,
+  textAlign,
   as,
   children,
   padding,
@@ -34,13 +31,13 @@ export default function Mono<T extends MonoElements = typeof DEFAULT_ELEMENT>({
   const theme = useTheme();
   const Component = block === true ? 'pre' : as ?? DEFAULT_ELEMENT;
   const textBaseProps: Combine<TextBaseProps, StyleProps> = {
-    weight,
+    fontWeight,
     lineHeight,
-    size,
+    fontSize,
     color,
-    align,
+    textAlign,
   };
-  const monoBaseProps: StyleProps = {
+  const monoBaseProps = {
     padding,
     backgroundColor,
     borderRadius,

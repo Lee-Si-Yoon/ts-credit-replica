@@ -1,11 +1,8 @@
-import type { LayoutStyleProps } from './layoutProps.types';
-import type { ShapeStyleProps } from './shapeProps.types';
-
-export type StyleProps = LayoutStyleProps & ShapeStyleProps;
+import type { CSSProperties } from '@emotion/serialize';
 
 export function extractStyleProps<T extends Record<string, unknown>>(
-  others: StyleProps & T
-): { styleProps: StyleProps; rest: T } {
+  others: CSSProperties & T
+) {
   const {
     margin,
     padding,
@@ -51,5 +48,5 @@ export function extractStyleProps<T extends Record<string, unknown>>(
     color,
   };
 
-  return { styleProps, rest: rest as unknown as T };
+  return { styleProps, rest: rest as T };
 }

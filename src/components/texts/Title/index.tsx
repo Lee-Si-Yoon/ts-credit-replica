@@ -1,10 +1,7 @@
-import type { ComponentWithStyleProps } from '@components/core/componentWithStyleProps';
-import {
-  extractStyleProps,
-  type StyleProps,
-} from '@components/core/extractStyleProps';
+import type { ComponentWithStyleProps } from '@components/core/component.type';
+import { extractStyleProps } from '@components/core/extractStyleProps';
 import { parseStyleProps } from '@components/core/parseStyleProps';
-import type { TextBaseProps } from '@components/core/textBaseProps.types';
+import type { StyleProps, TextBaseProps } from '@components/core/types';
 import type { Combine, OverridableProps } from '@utils/types';
 import { css, useTheme } from '@emotion/react';
 import { getTextBaseStyle, getThemeTextStyle } from '../shared/styles';
@@ -20,11 +17,11 @@ export default function Title<
   T extends HeadingElements = typeof DEFAULT_ELEMENT,
 >({
   display,
-  weight,
+  fontWeight,
   lineHeight,
-  size,
+  fontSize,
   color,
-  align,
+  textAlign,
   as,
   children,
   ...props
@@ -33,11 +30,11 @@ export default function Title<
   const Component = as ?? DEFAULT_ELEMENT;
   const textBaseProps: Combine<TextBaseProps, StyleProps> = {
     display,
-    weight,
+    fontWeight,
     lineHeight,
-    size,
+    fontSize,
     color,
-    align,
+    textAlign,
   };
   const { styleProps, rest } = extractStyleProps(props);
   const parsedStyleProps = parseStyleProps(styleProps);

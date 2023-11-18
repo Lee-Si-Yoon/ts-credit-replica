@@ -1,4 +1,4 @@
-import type { StyleProps } from '@components/core/extractStyleProps';
+import type { StyleProps } from '@components/core/types';
 import { css, type Theme } from '@emotion/react';
 
 export function getThemeMonoTextStyle(theme: Theme) {

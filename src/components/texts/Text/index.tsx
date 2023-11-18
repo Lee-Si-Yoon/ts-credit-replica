@@ -1,9 +1,7 @@
-import type { ComponentWithStyleProps } from '@components/core/componentWithStyleProps';
-import {
-  extractStyleProps,
-  type StyleProps,
-} from '@components/core/extractStyleProps';
+import type { ComponentWithStyleProps } from '@components/core/component.type';
+import { extractStyleProps } from '@components/core/extractStyleProps';
 import { parseStyleProps } from '@components/core/parseStyleProps';
+import type { StyleProps } from '@components/core/types';
 import type { Combine, OverridableProps } from '@utils/types';
 import { css, useTheme } from '@emotion/react';
 import { getTextBaseStyle, getThemeTextStyle } from '../shared/styles';
@@ -23,11 +21,11 @@ export default function Text<
   T extends React.ElementType = typeof DEFAULT_ELEMENT,
 >({
   display,
-  weight,
+  fontWeight,
   lineHeight,
-  size,
+  fontSize,
   color,
-  align,
+  textAlign,
   inherit,
   truncate,
   lineClamp,
@@ -40,11 +38,11 @@ export default function Text<
   const Component = span === true ? 'span' : as ?? DEFAULT_ELEMENT;
   const textBaseProps: Combine<TextExtendedProps, StyleProps> = {
     display,
-    weight,
+    fontWeight,
     lineHeight,
-    size,
+    fontSize,
     color,
-    align,
+    textAlign,
   };
   const { styleProps, rest } = extractStyleProps(props);
   const parsedStyleProps = parseStyleProps(styleProps);

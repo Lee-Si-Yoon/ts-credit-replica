@@ -1,9 +1,12 @@
-import type { CSSInterpolation } from '@emotion/serialize';
-import type { StyleProps } from './extractStyleProps';
+import type { Entries, ValueOf } from '@utils/types';
+import type { CSSInterpolation, CSSProperties } from '@emotion/serialize';
 
-export function parseStyleProps(styleProps: StyleProps) {
-  const parsedKeyValues = Object.entries(styleProps)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function parseStyleProps(styleProps: CSSProperties) {
+  const parsedKeyValues = (
+    Object.entries(styleProps) as Entries<
+      Record<keyof CSSProperties, ValueOf<CSSProperties>>
+    >
+  )
     .filter(([_, value]) => {
       return value !== undefined;
     })

@@ -26,5 +26,7 @@ module.exports = {
         '^(?!index.tsx?$).+.tsx$': 'PascalCase',
       },
     ],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
   },
 };
