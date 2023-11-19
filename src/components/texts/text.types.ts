@@ -11,7 +11,3 @@ export interface TextExtendedProps extends TextBaseProps {
 }
 
 export type MonoElements = 'code' | 'kbd' | 'pre' | 'samp';
-
-export interface MonoExtendedProps extends TextBaseProps {
-  block?: boolean;
-}

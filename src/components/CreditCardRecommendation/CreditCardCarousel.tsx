@@ -133,8 +133,8 @@ export function CreditCardCarousel() {
                     i === indexLeft
                       ? -90
                       : i === indexRight
-                        ? 90
-                        : rotationDegree
+                      ? 90
+                      : rotationDegree
                   }deg)) translateZ(150px)`,
                 }}
               >

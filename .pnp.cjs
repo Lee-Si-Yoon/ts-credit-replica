@@ -18190,18 +18190,18 @@ async function copyFile(
               fs__default.default.constants.COPYFILE_FICLONE
             )
       : linkStrategy !== null
-        ? makeLinkOperation(
-            destinationFs,
+      ? makeLinkOperation(
+          destinationFs,
+          destination,
+          source,
+          sourceStat,
+          linkStrategy
+        )
+      : async () =>
+          destinationFs.writeFilePromise(
             destination,
-            source,
-            sourceStat,
-            linkStrategy
-          )
-        : async () =>
-            destinationFs.writeFilePromise(
-              destination,
-              await sourceFs.readFilePromise(source)
-            );
+            await sourceFs.readFilePromise(source)
+          );
   prelayout.push(async () => op());
   return true;
 }
@@ -19924,8 +19924,8 @@ class ZipFS extends BasePortableFakeFS {
       const type = this.listings.has(p)
         ? S_IFDIR
         : this.isSymbolicLink(entry)
-          ? S_IFLNK
-          : S_IFREG;
+        ? S_IFLNK
+        : S_IFREG;
       const defaultMode = type === S_IFDIR ? 493 : 420;
       const mode = type | (this.getUnixMode(entry, defaultMode) & 511);
       const crc = this.libzip.struct.statCrc(stat);
@@ -22255,8 +22255,8 @@ class FileHandle {
           typeof options === `string`
             ? options
             : options == null
-              ? void 0
-              : options.encoding) != null
+            ? void 0
+            : options.encoding) != null
           ? _a2
           : void 0;
       return await this[kBaseFs].appendFilePromise(
@@ -22344,8 +22344,8 @@ class FileHandle {
           typeof options === `string`
             ? options
             : options == null
-              ? void 0
-              : options.encoding) != null
+            ? void 0
+            : options.encoding) != null
           ? _a2
           : void 0;
       return await this[kBaseFs].readFilePromise(this.fd, encoding);
@@ -22387,8 +22387,8 @@ class FileHandle {
           typeof options === `string`
             ? options
             : options == null
-              ? void 0
-              : options.encoding) != null
+            ? void 0
+            : options.encoding) != null
           ? _a2
           : void 0;
       await this[kBaseFs].writeFilePromise(this.fd, data, encoding);
@@ -26531,10 +26531,10 @@ var libzipSync = { exports: {} };
           var type = stream.tty
             ? 2
             : FS.isDir(stream.mode)
-              ? 3
-              : FS.isLink(stream.mode)
-                ? 7
-                : 4;
+            ? 3
+            : FS.isLink(stream.mode)
+            ? 7
+            : 4;
           HEAP8[pbuf >> 0] = type;
           return 0;
         } catch (e) {
@@ -27130,13 +27130,15 @@ function getLibzipSync() {
 
 var ErrorCode = /* @__PURE__ */ ((ErrorCode2) => {
   ErrorCode2['API_ERROR'] = `API_ERROR`;
-  ErrorCode2['BUILTIN_NODE_RESOLUTION_FAILED'] =
-    `BUILTIN_NODE_RESOLUTION_FAILED`;
+  ErrorCode2[
+    'BUILTIN_NODE_RESOLUTION_FAILED'
+  ] = `BUILTIN_NODE_RESOLUTION_FAILED`;
   ErrorCode2['EXPORTS_RESOLUTION_FAILED'] = `EXPORTS_RESOLUTION_FAILED`;
   ErrorCode2['MISSING_DEPENDENCY'] = `MISSING_DEPENDENCY`;
   ErrorCode2['MISSING_PEER_DEPENDENCY'] = `MISSING_PEER_DEPENDENCY`;
-  ErrorCode2['QUALIFIED_PATH_RESOLUTION_FAILED'] =
-    `QUALIFIED_PATH_RESOLUTION_FAILED`;
+  ErrorCode2[
+    'QUALIFIED_PATH_RESOLUTION_FAILED'
+  ] = `QUALIFIED_PATH_RESOLUTION_FAILED`;
   ErrorCode2['INTERNAL'] = `INTERNAL`;
   ErrorCode2['UNDECLARED_DEPENDENCY'] = `UNDECLARED_DEPENDENCY`;
   ErrorCode2['UNSUPPORTED'] = `UNSUPPORTED`;
@@ -27389,8 +27391,8 @@ function applyPatch(pnpapi, opts) {
       const absoluteRequest = npath.isAbsolute(request)
         ? request
         : parentDirectory !== null
-          ? npath.resolve(parentDirectory, request)
-          : null;
+        ? npath.resolve(parentDirectory, request)
+        : null;
       if (absoluteRequest !== null) {
         const apiPath =
           parent && parentDirectory === npath.dirname(absoluteRequest)

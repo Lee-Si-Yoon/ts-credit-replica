@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { layoutStylePropsController } from '../../../.storybook/stylePropsController';
-import MonoComponent from './';
+import TextComponent from './';
 
 const loremCode = "console.log('hello world!')";
 
-const meta: Meta<typeof MonoComponent> = {
-  component: MonoComponent,
+const meta: Meta<typeof TextComponent.Mono> = {
+  component: TextComponent.Mono,
 };
 
 export default meta;
-type Story = StoryObj<typeof MonoComponent>;
+type Story = StoryObj<typeof TextComponent.Mono>;
 
 export const Mono: Story = {
   args: {
@@ -22,9 +22,6 @@ export const Mono: Story = {
     as: {
       options: ['code', 'kbd', 'pre', 'samp'],
       control: { type: 'select' },
-    },
-    block: {
-      control: { type: 'boolean' },
     },
     backgroundColor: {
       control: { type: 'color' },

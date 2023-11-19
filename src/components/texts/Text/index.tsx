@@ -1,11 +1,12 @@
 import type { ComponentWithStyleProps } from '@components/core/component.type';
 import { extractStyleProps } from '@components/core/extractStyleProps';
 import { parseStyleProps } from '@components/core/parseStyleProps';
-import type { StyleProps } from '@components/core/types';
+import type { StyleProps, TextBaseProps } from '@components/core/types';
 import type { Combine, OverridableProps } from '@utils/types';
 import { css, useTheme } from '@emotion/react';
 import { getTextBaseStyle, getThemeTextStyle } from '../shared/styles';
-import type { TextExtendedProps } from '../text.types';
+import type { MonoElements, TextExtendedProps } from '../text.types';
+import { getBaseMonoStyle, getThemeMonoTextStyle } from './monoStyles';
 import {
   getLineClampedTextStyle,
   getTruncatedTextStyle,
@@ -17,9 +18,7 @@ export const DEFAULT_ELEMENT = 'p' as const;
 type TextProps<T extends React.ElementType = typeof DEFAULT_ELEMENT> =
   OverridableProps<T, ComponentWithStyleProps<TextExtendedProps>>;
 
-export default function Text<
-  T extends React.ElementType = typeof DEFAULT_ELEMENT
->({
+function Text<T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   display,
   fontWeight,
   lineHeight,
@@ -64,3 +63,56 @@ export default function Text<
     </Component>
   );
 }
+
+export const DEFAULT_MONO_ELEMENT = 'code' as const;
+
+function Mono<T extends MonoElements = typeof DEFAULT_MONO_ELEMENT>({
+  display,
+  fontWeight,
+  lineHeight,
+  fontSize,
+  color,
+  textAlign,
+  as,
+  children,
+  padding,
+  backgroundColor,
+  borderRadius,
+  ...props
+}: TextProps<T>) {
+  const theme = useTheme();
+  const Component = as ?? DEFAULT_MONO_ELEMENT;
+  const textBaseProps: Combine<TextBaseProps, StyleProps> = {
+    fontWeight,
+    lineHeight,
+    fontSize,
+    color,
+    textAlign,
+  };
+  const monoBaseProps = {
+    padding,
+    backgroundColor,
+    borderRadius,
+  };
+  const { styleProps, rest } = extractStyleProps(props);
+  const parsedStyleProps = parseStyleProps(styleProps);
+
+  return (
+    <Component
+      css={css`
+        ${getThemeMonoTextStyle(theme)};
+        ${getTextBaseStyle(textBaseProps)};
+        ${getBaseMonoStyle(monoBaseProps)};
+        ${parsedStyleProps};
+      `}
+      {...rest}
+    >
+      {children}
+    </Component>
+  );
+}
+
+Text.Default = Text;
+Text.Mono = Mono;
+
+export default Text;
