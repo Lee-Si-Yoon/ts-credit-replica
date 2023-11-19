@@ -18,7 +18,7 @@ type TextProps<T extends React.ElementType = typeof DEFAULT_ELEMENT> =
   OverridableProps<T, ComponentWithStyleProps<TextExtendedProps>>;
 
 export default function Text<
-  T extends React.ElementType = typeof DEFAULT_ELEMENT,
+  T extends React.ElementType = typeof DEFAULT_ELEMENT
 >({
   display,
   fontWeight,
@@ -30,12 +30,11 @@ export default function Text<
   truncate,
   lineClamp,
   as,
-  span = false,
   children,
   ...props
 }: TextProps<T>) {
   const theme = useTheme();
-  const Component = span === true ? 'span' : as ?? DEFAULT_ELEMENT;
+  const Component = as ?? DEFAULT_ELEMENT;
   const textBaseProps: Combine<TextExtendedProps, StyleProps> = {
     display,
     fontWeight,
