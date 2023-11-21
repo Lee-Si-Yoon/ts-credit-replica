@@ -4,10 +4,7 @@ import { parseStyleProps } from '@components/core/parseStyleProps';
 import type { StrictPropsWithChildren } from '@utils/types';
 import { css } from '@emotion/react';
 
-/**
- * TODO
- * 1. inject flex:1 to children with grow prop(boolean)
- */
+// TODO: inject flex:1 to children with grow prop(boolean)
 interface GroupProps {
   align?: FlexProperty['AlignItems'];
   justify?: FlexProperty['JustifyContent'];

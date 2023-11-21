@@ -9,6 +9,7 @@ interface ListRowProps {
   onClick?: () => void;
 }
 
+// TODO: inject onPress animation from outside(ripple & scale)
 function ListRow({
   content,
   rightSlot,
