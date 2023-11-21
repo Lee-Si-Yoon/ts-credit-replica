@@ -19,6 +19,7 @@ type SelfPosition =
   | 'self-end'
   | 'self-start'
   | 'start';
+type FlexWrap = Globals | 'nowrap' | 'wrap' | 'wrap-reverse';
 
 export interface FlexProperty {
   AlignItems: Globals | SelfPosition | 'baseline' | 'normal' | 'stretch';
@@ -29,4 +30,5 @@ export interface FlexProperty {
     | 'left'
     | 'normal'
     | 'right';
+  FlexWrap: FlexWrap;
 }
