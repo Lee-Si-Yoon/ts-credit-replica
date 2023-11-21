@@ -17,8 +17,12 @@ export const Stack: Story = {
   render: (args) => {
     return (
       <StackComponent {...args}>
-        <div style={{ backgroundColor: 'black', height: '50px' }} />
-        <div style={{ backgroundColor: 'black', height: '50px' }} />
+        <div
+          style={{ backgroundColor: 'black', height: '50px', width: '100%' }}
+        />
+        <div
+          style={{ backgroundColor: 'black', height: '50px', width: '80%' }}
+        />
       </StackComponent>
     );
   },
