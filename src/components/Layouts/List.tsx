@@ -37,7 +37,7 @@ function List({
 
 function Horizontal({
   children,
-  gap,
+  gap = 16,
   ...props
 }: StrictPropsWithChildren<ListProps>) {
   const { styleProps, rest } = extractStyleProps(props);
