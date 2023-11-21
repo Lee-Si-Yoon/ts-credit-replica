@@ -25,11 +25,13 @@ export default function Stack({
       css={css`
         display: flex;
         flex-direction: column;
-        align-items: ${align};
-        justify-content: ${justify};
-        row-gap: ${gap}px;
         ${parsedStyleProps};
       `}
+      style={{
+        alignItems: align,
+        justifyContent: justify,
+        rowGap: gap,
+      }}
       {...rest}
     >
       {children}
