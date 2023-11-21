@@ -54,6 +54,7 @@ jobs:
         with:
           mode: recreate
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          comment_tag: execution
           message: |
             Chromatic has updates:
             | URL | Consumed snapshot | 
