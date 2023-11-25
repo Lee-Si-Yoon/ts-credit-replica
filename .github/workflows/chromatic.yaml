@@ -2,6 +2,9 @@ name: 'Chromatic'
 
 on:
   pull_request:
+  push:
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -23,8 +26,24 @@ jobs:
           node-version: '18.16.x'
           cache: 'yarn'
 
+      - name: Set Yarn Version
+        id: set-version
+        run: |
+          yarn set version 4.0.2
+          echo "YARN_VERSION=$(yarn -v)" >> $GITHUB_OUTPUT
+
+      - name: Yarn Cache - PnP
+        uses: actions/cache@v2
+        with:
+          path: |
+            .yarn/cache
+            .pnp.*
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-${{ steps.set-version.outputs.YARN_VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-
+
       - name: Install dependencies
-        run: CI=true yarn install
+        run: yarn install
 
       - uses: dorny/paths-filter@v2
         id: changes
