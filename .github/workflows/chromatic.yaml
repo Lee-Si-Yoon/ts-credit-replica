@@ -52,7 +52,6 @@ jobs:
         if: steps.changes.outputs.src == 'true'
         uses: thollander/actions-comment-pull-request@v2
         with:
-          mode: recreate
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           comment_tag: execution
           message: |
