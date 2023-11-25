@@ -32,6 +32,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@emotion/babel-plugin", "npm:11.11.0"],\
             ["@emotion/react", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:11.11.1"],\
+            ["@emotion/serialize", "npm:1.1.2"],\
+            ["@faker-js/faker", "npm:8.2.0"],\
             ["@radix-ui/colors", "npm:3.0.0"],\
             ["@radix-ui/react-icons", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:1.3.0"],\
             ["@storybook/addon-essentials", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:7.5.3"],\
@@ -3297,6 +3299,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@eslint-js-npm-8.52.0-801dbdf7b0-490893b809.zip/node_modules/@eslint/js/",\
           "packageDependencies": [\
             ["@eslint/js", "npm:8.52.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@faker-js/faker", [\
+        ["npm:8.2.0", {\
+          "packageLocation": "./.yarn/cache/@faker-js-faker-npm-8.2.0-77752e0651-febc17018a.zip/node_modules/@faker-js/faker/",\
+          "packageDependencies": [\
+            ["@faker-js/faker", "npm:8.2.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -16441,6 +16452,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ts-credit-replica", "workspace:."],\
             ["@emotion/babel-plugin", "npm:11.11.0"],\
             ["@emotion/react", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:11.11.1"],\
+            ["@emotion/serialize", "npm:1.1.2"],\
+            ["@faker-js/faker", "npm:8.2.0"],\
             ["@radix-ui/colors", "npm:3.0.0"],\
             ["@radix-ui/react-icons", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:1.3.0"],\
             ["@storybook/addon-essentials", "virtual:086d99a271c3b2067f292e978d69693e9101d48ef196f1a011c7c0ed6dfaf8e068d5f0818370d760309429a8180494f07c138d5d0848360b8348a29583d579ba#npm:7.5.3"],\
