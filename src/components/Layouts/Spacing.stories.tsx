@@ -16,7 +16,7 @@ export const Spacing: Story = {
     (Story) => {
       return (
         <>
-          <div style={{ backgroundColor: 'black', height: '50px' }} />
+          <div style={{ backgroundColor: 'black', height: '80px' }} />
           <Story />
           <div style={{ backgroundColor: 'black', height: '50px' }} />
         </>
