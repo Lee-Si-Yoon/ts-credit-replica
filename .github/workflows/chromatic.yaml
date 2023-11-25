@@ -2,7 +2,9 @@ name: 'Chromatic'
 
 on:
   pull_request:
-  push: main
+  push:
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
