@@ -96,8 +96,8 @@ export function CreditCardMeta() {
                 i === indexLeft
                   ? `translateX(${rotationDegree - 50}%)`
                   : i === indexRight
-                  ? `translateX(${rotationDegree + 50}%)`
-                  : `translateX(${rotationDegree}%)`,
+                    ? `translateX(${rotationDegree + 50}%)`
+                    : `translateX(${rotationDegree}%)`,
             }}
           >
             <span css={benefit}>{item.benefit}</span>
