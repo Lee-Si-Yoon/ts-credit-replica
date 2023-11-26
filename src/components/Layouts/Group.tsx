@@ -2,6 +2,8 @@ import React from 'react';
 import { extractStyleProps } from '@components/core/extractStyleProps';
 import type { FlexProperty } from '@components/core/flexProps.type';
 import { parseStyleProps } from '@components/core/parseStyleProps';
+import type { StyleProps } from '@components/core/types';
+import type { Combine } from '@utils/types';
 import { css } from '@emotion/react';
 
 interface GroupProps {
@@ -44,10 +46,9 @@ export default function Group({
   wrap = 'wrap',
   gap = 16,
   grow = true,
-  children,
   ...props
-}: GroupProps) {
-  const { styleProps, rest } = extractStyleProps(props);
+}: Combine<GroupProps, StyleProps>) {
+  const { styleProps, rest } = extractStyleProps<GroupProps>(props);
   const parsedStyleProps = parseStyleProps(styleProps);
 
   return (
@@ -65,8 +66,8 @@ export default function Group({
       {...rest}
     >
       {grow === true
-        ? injectFlexGrowToChildren(children as React.ReactElement)
-        : children}
+        ? injectFlexGrowToChildren(props.children as React.ReactElement)
+        : props.children}
     </div>
   );
 }

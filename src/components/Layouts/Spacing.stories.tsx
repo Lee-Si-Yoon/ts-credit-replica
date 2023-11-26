@@ -12,15 +12,13 @@ export const Spacing: Story = {
   args: {
     size: 50,
   },
-  decorators: [
-    (Story) => {
-      return (
-        <>
-          <div style={{ backgroundColor: 'black', height: '80px' }} />
-          <Story />
-          <div style={{ backgroundColor: 'black', height: '50px' }} />
-        </>
-      );
-    },
-  ],
+  render: (args) => {
+    return (
+      <>
+        <div style={{ backgroundColor: 'black', height: '80px' }} />
+        <SpacingComponent {...args} />
+        <div style={{ backgroundColor: 'black', height: '50px' }} />
+      </>
+    );
+  },
 };
