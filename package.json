@@ -85,7 +85,7 @@
   "msw": {
     "workerDirectory": "public"
   },
-  "packageManager": "yarn@4.0.0",
+  "packageManager": "yarn@4.0.2",
   "readme": "ERROR: No README data found!",
   "_id": "ts-credit-replica@0.1.0"
 }
