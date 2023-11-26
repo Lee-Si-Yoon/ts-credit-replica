@@ -2,7 +2,7 @@ import type { ComponentWithStyleProps } from '@components/core/component.type';
 import { extractStyleProps } from '@components/core/extractStyleProps';
 import { parseStyleProps } from '@components/core/parseStyleProps';
 import { css } from '@emotion/react';
-import ListRow from './ListRow';
+import ListRow from './Row';
 
 interface ListProps {
   gap?: number;

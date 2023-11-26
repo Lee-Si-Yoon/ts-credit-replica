@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ListComponent from './List';
-import ListRowComponent from './ListRow';
+import ListComponent from '.';
 
 const meta: Meta<typeof ListComponent> = {
   component: ListComponent,
@@ -35,29 +34,6 @@ export const Horizontal: Story = {
           style={{ backgroundColor: 'black', height: '50px', width: '80%' }}
         />
       </ListComponent.Horizontal>
-    );
-  },
-};
-
-type ListRowStory = StoryObj<typeof ListRowComponent>;
-
-export const Row: ListRowStory = {
-  argTypes: {
-    onClick: {
-      action: true,
-    },
-  },
-  args: {
-    withArrow: true,
-    children: <span>content</span>,
-  },
-  render: (args) => {
-    return (
-      <ListComponent>
-        {Array.from({ length: 5 }).map((_, i) => {
-          return <ListRowComponent key={`${i + 1}`} {...args} />;
-        })}
-      </ListComponent>
     );
   },
 };
