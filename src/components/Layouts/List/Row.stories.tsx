@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ListComponent from './List';
-import ListRowComponent from './ListRow';
+import ListComponent from '.';
+import ListRowComponent from './Row';
 
 const meta: Meta<typeof ListRowComponent> = {
   component: ListRowComponent,
@@ -14,16 +14,16 @@ const meta: Meta<typeof ListRowComponent> = {
 export default meta;
 type Story = StoryObj<typeof ListRowComponent>;
 
-export const ListRow: Story = {
+export const Row: Story = {
   args: {
     withArrow: true,
-    content: <span>content</span>,
+    children: <span>content</span>,
   },
   render: (args) => {
     return (
       <ListComponent>
         {Array.from({ length: 5 }).map((_, i) => {
-          return <ListRowComponent key={`${i + 1}`} {...args} />;
+          return <ListComponent.Row key={`${i + 1}`} {...args} />;
         })}
       </ListComponent>
     );

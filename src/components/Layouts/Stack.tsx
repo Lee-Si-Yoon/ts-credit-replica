@@ -1,7 +1,7 @@
+import type { ComponentWithStyleProps } from '@components/core/component.type';
 import { extractStyleProps } from '@components/core/extractStyleProps';
 import type { FlexProperty } from '@components/core/flexProps.type';
 import { parseStyleProps } from '@components/core/parseStyleProps';
-import type { StrictPropsWithChildren } from '@utils/types';
 import { css } from '@emotion/react';
 
 interface StackProps {
@@ -16,8 +16,8 @@ export default function Stack({
   gap = 16,
   children,
   ...props
-}: StrictPropsWithChildren<StackProps>) {
-  const { styleProps, rest } = extractStyleProps(props);
+}: ComponentWithStyleProps<StackProps>) {
+  const { styleProps, rest } = extractStyleProps<StackProps>(props);
   const parsedStyleProps = parseStyleProps(styleProps);
 
   return (

@@ -1,10 +1,11 @@
 import type { Entries, ValueOf } from '@utils/types';
-import type { CSSInterpolation, CSSProperties } from '@emotion/serialize';
+import type { CSSInterpolation } from '@emotion/serialize';
+import type { StyleProps } from './types';
 
-export function parseStyleProps(styleProps: CSSProperties) {
+export function parseStyleProps(styleProps: StyleProps) {
   const parsedKeyValues = (
     Object.entries(styleProps) as Entries<
-      Record<keyof CSSProperties, ValueOf<CSSProperties>>
+      Record<keyof StyleProps, ValueOf<StyleProps>>
     >
   )
     .filter(([_, value]) => {

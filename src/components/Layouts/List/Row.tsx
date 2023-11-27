@@ -1,9 +1,11 @@
+import type { ComponentWithStyleProps } from '@components/core/component.type';
+import { extractStyleProps } from '@components/core/extractStyleProps';
+import { parseStyleProps } from '@components/core/parseStyleProps';
 import { css } from '@emotion/react';
 import { gray } from '@radix-ui/colors';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 
 interface ListRowProps {
-  content: NonNullable<React.ReactNode>;
   rightSlot?: React.ReactNode;
   withArrow?: boolean;
   onClick?: () => void;
@@ -11,12 +13,15 @@ interface ListRowProps {
 
 // TODO: inject onPress animation from outside(ripple & scale)
 function ListRow({
-  content,
+  children,
   rightSlot,
   withArrow,
   onClick,
-  ...rest
-}: ListRowProps) {
+  ...props
+}: ComponentWithStyleProps<ListRowProps>) {
+  const { styleProps, rest } = extractStyleProps<ListRowProps>(props);
+  const parsedStyleProps = parseStyleProps(styleProps);
+
   return (
     <li
       role="presentation"
@@ -25,11 +30,12 @@ function ListRow({
         justify-content: space-between;
         align-items: center;
         cursor: ${typeof onClick === 'function' && 'pointer'};
+        ${parsedStyleProps};
       `}
       onClick={onClick}
       {...rest}
     >
-      {content}
+      {children}
       {rightSlot}
       {withArrow === true && rightSlot === undefined && (
         <ChevronRightIcon

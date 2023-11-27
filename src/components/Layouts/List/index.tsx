@@ -1,7 +1,8 @@
+import type { ComponentWithStyleProps } from '@components/core/component.type';
 import { extractStyleProps } from '@components/core/extractStyleProps';
 import { parseStyleProps } from '@components/core/parseStyleProps';
-import type { StrictPropsWithChildren } from '@utils/types';
 import { css } from '@emotion/react';
+import ListRow from './Row';
 
 interface ListProps {
   gap?: number;
@@ -11,8 +12,8 @@ function List({
   children,
   gap = 16,
   ...props
-}: StrictPropsWithChildren<ListProps>) {
-  const { styleProps, rest } = extractStyleProps(props);
+}: ComponentWithStyleProps<ListProps>) {
+  const { styleProps, rest } = extractStyleProps<ListProps>(props);
   const parsedStyleProps = parseStyleProps(styleProps);
 
   return (
@@ -39,8 +40,8 @@ function Horizontal({
   children,
   gap = 16,
   ...props
-}: StrictPropsWithChildren<ListProps>) {
-  const { styleProps, rest } = extractStyleProps(props);
+}: ComponentWithStyleProps<ListProps>) {
+  const { styleProps, rest } = extractStyleProps<ListProps>(props);
   const parsedStyleProps = parseStyleProps(styleProps);
 
   return (
@@ -64,5 +65,6 @@ function Horizontal({
 
 List.default = List;
 List.Horizontal = Horizontal;
+List.Row = ListRow;
 
 export default List;
