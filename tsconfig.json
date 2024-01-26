@@ -25,9 +25,9 @@
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
       "@mocks/*": ["mocks/*"],
-      "@routes/*": ["routes/*"]
-    }
+      "@routes/*": ["routes/*"],
+    },
   },
   "include": ["src"],
-  "extends": "eslint-config-siyoon/tsconfig.json"
+  "extends": "eslint-config-siyoon/tsconfig.json",
 }

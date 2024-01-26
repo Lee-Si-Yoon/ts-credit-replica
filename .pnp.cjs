@@ -17665,9 +17665,7 @@ function toPortablePathWin32(p) {
   if ((windowsPathMatch = p.match(WINDOWS_PATH_REGEXP)))
     p = `/${windowsPathMatch[1]}`;
   else if ((uncWindowsPathMatch = p.match(UNC_WINDOWS_PATH_REGEXP)))
-    p = `/unc/${uncWindowsPathMatch[1] ? `.dot/` : ``}${
-      uncWindowsPathMatch[2]
-    }`;
+    p = `/unc/${uncWindowsPathMatch[1] ? `.dot/` : ``}${uncWindowsPathMatch[2]}`;
   return p;
 }
 const toPortablePath =
@@ -18472,9 +18470,7 @@ class FakeFS {
       }
     } else {
       throw new Error(
-        `Unsupported file type (file: ${source}, mode: 0o${stat.mode
-          .toString(8)
-          .padStart(6, `0`)})`
+        `Unsupported file type (file: ${source}, mode: 0o${stat.mode.toString(8).padStart(6, `0`)})`
       );
     }
     const mode = stat.mode & 511;
@@ -23607,9 +23603,7 @@ function ERR_REQUIRE_ESM(filename, parentPath = null) {
       path__default.default.basename(parentPath)
       ? filename
       : path__default.default.basename(filename);
-  const msg = `require() of ES Module ${filename}${
-    parentPath ? ` from ${parentPath}` : ``
-  } not supported.
+  const msg = `require() of ES Module ${filename}${parentPath ? ` from ${parentPath}` : ``} not supported.
 Instead change the require of ${basename} in ${parentPath} to a dynamic import() which is available in all CommonJS modules.`;
   const err = new Error(msg);
   err.code = `ERR_REQUIRE_ESM`;
@@ -23747,9 +23741,7 @@ function applyPatch(pnpapi, opts) {
       if (optionNames.size > 0) {
         throw makeError(
           ErrorCode.UNSUPPORTED,
-          `Some options passed to require() aren't supported by PnP yet (${Array.from(
-            optionNames
-          ).join(`, `)})`
+          `Some options passed to require() aren't supported by PnP yet (${Array.from(optionNames).join(`, `)})`
         );
       }
     }
@@ -24020,18 +24012,14 @@ function createErrorType(code, messageCreator, errorType) {
 const ERR_PACKAGE_IMPORT_NOT_DEFINED = createErrorType(
   `ERR_PACKAGE_IMPORT_NOT_DEFINED`,
   (specifier, packagePath, base) => {
-    return `Package import specifier "${specifier}" is not defined${
-      packagePath ? ` in package ${packagePath}package.json` : ``
-    } imported from ${base}`;
+    return `Package import specifier "${specifier}" is not defined${packagePath ? ` in package ${packagePath}package.json` : ``} imported from ${base}`;
   },
   TypeError
 );
 const ERR_INVALID_MODULE_SPECIFIER = createErrorType(
   `ERR_INVALID_MODULE_SPECIFIER`,
   (request, reason, base = void 0) => {
-    return `Invalid module "${request}" ${reason}${
-      base ? ` imported from ${base}` : ``
-    }`;
+    return `Invalid module "${request}" ${reason}${base ? ` imported from ${base}` : ``}`;
   },
   TypeError
 );
@@ -24045,28 +24033,18 @@ const ERR_INVALID_PACKAGE_TARGET = createErrorType(
       !StringPrototypeStartsWith(target, `./`);
     if (key === `.`) {
       assert__default.default(isImport === false);
-      return `Invalid "exports" main target ${JSONStringify(
-        target
-      )} defined in the package config ${pkgPath}package.json${
-        base ? ` imported from ${base}` : ``
-      }${relError ? `; targets must start with "./"` : ``}`;
+      return `Invalid "exports" main target ${JSONStringify(target)} defined in the package config ${pkgPath}package.json${base ? ` imported from ${base}` : ``}${relError ? `; targets must start with "./"` : ``}`;
     }
-    return `Invalid "${
-      isImport ? `imports` : `exports`
-    }" target ${JSONStringify(
+    return `Invalid "${isImport ? `imports` : `exports`}" target ${JSONStringify(
       target
-    )} defined for '${key}' in the package config ${pkgPath}package.json${
-      base ? ` imported from ${base}` : ``
-    }${relError ? `; targets must start with "./"` : ``}`;
+    )} defined for '${key}' in the package config ${pkgPath}package.json${base ? ` imported from ${base}` : ``}${relError ? `; targets must start with "./"` : ``}`;
   },
   Error
 );
 const ERR_INVALID_PACKAGE_CONFIG = createErrorType(
   `ERR_INVALID_PACKAGE_CONFIG`,
   (path, base, message) => {
-    return `Invalid package config ${path}${
-      base ? ` while importing ${base}` : ``
-    }${message ? `. ${message}` : ``}`;
+    return `Invalid package config ${path}${base ? ` while importing ${base}` : ``}${message ? `. ${message}` : ``}`;
   },
   Error
 );
@@ -24074,12 +24052,8 @@ const ERR_PACKAGE_PATH_NOT_EXPORTED = createErrorType(
   'ERR_PACKAGE_PATH_NOT_EXPORTED',
   (pkgPath, subpath, base = void 0) => {
     if (subpath === '.')
-      return `No "exports" main defined in ${pkgPath}package.json${
-        base ? ` imported from ${base}` : ''
-      }`;
-    return `Package subpath '${subpath}' is not defined by "exports" in ${pkgPath}package.json${
-      base ? ` imported from ${base}` : ''
-    }`;
+      return `No "exports" main defined in ${pkgPath}package.json${base ? ` imported from ${base}` : ''}`;
+    return `Package subpath '${subpath}' is not defined by "exports" in ${pkgPath}package.json${base ? ` imported from ${base}` : ''}`;
   },
   Error
 );
@@ -24227,9 +24201,7 @@ function throwImportNotDefined(specifier, packageJSONUrl, base) {
   );
 }
 function throwInvalidSubpath(subpath, packageJSONUrl, internal, base) {
-  const reason = `request is not a valid subpath for the "${
-    internal ? 'imports' : 'exports'
-  }" resolution of ${url.fileURLToPath(packageJSONUrl)}`;
+  const reason = `request is not a valid subpath for the "${internal ? 'imports' : 'exports'}" resolution of ${url.fileURLToPath(packageJSONUrl)}`;
   throw new ERR_INVALID_MODULE_SPECIFIER(
     subpath,
     reason,
@@ -24469,9 +24441,7 @@ function emitTrailingSlashPatternDeprecation(match, pjsonUrl, base) {
   if (emittedPackageWarnings.has(pjsonPath + '|' + match)) return;
   emittedPackageWarnings.add(pjsonPath + '|' + match);
   process.emitWarning(
-    `Use of deprecated trailing slash pattern mapping "${match}" in the "exports" field module resolution of the package at ${pjsonPath}${
-      base ? ` imported from ${url.fileURLToPath(base)}` : ''
-    }. Mapping specifiers ending in "/" is no longer supported.`,
+    `Use of deprecated trailing slash pattern mapping "${match}" in the "exports" field module resolution of the package at ${pjsonPath}${base ? ` imported from ${url.fileURLToPath(base)}` : ''}. Mapping specifiers ending in "/" is no longer supported.`,
     'DeprecationWarning',
     'DEP0155'
   );
@@ -24988,18 +24958,12 @@ function makeApi(runtimeState, opts) {
     if (entry.args.length > 0) console.error();
     for (const arg of entry.args)
       console.error(
-        `  ${c(`37;1`, `In \u2190`)} ${nodeUtils.inspect(arg, {
-          colors,
-          compact: true,
-        })}`
+        `  ${c(`37;1`, `In \u2190`)} ${nodeUtils.inspect(arg, { colors, compact: true })}`
       );
     if (entry.result) {
       console.error();
       console.error(
-        `  ${c(`37;1`, `Out \u2192`)} ${nodeUtils.inspect(entry.result, {
-          colors,
-          compact: true,
-        })}`
+        `  ${c(`37;1`, `Out \u2192`)} ${nodeUtils.inspect(entry.result, { colors, compact: true })}`
       );
     }
     const stack = new Error().stack.match(/(?<=^ +)at.*/gm)?.slice(2) ?? [];
@@ -25420,11 +25384,7 @@ Required by: ${issuerForDisplay}
             ErrorCode.MISSING_PEER_DEPENDENCY,
             `Your application tried to access ${dependencyName} (a peer dependency); this isn't allowed as there is no ancestor to satisfy the requirement. Use a devDependency if needed.
 
-Required package: ${dependencyName}${
-              dependencyName !== requestForDisplay
-                ? ` (via "${requestForDisplay}")`
-                : ``
-            }
+Required package: ${dependencyName}${dependencyName !== requestForDisplay ? ` (via "${requestForDisplay}")` : ``}
 Required by: ${issuerForDisplay}
 `,
             {
@@ -25443,18 +25403,10 @@ Required by: ${issuerForDisplay}
           ) {
             error = makeError(
               ErrorCode.MISSING_PEER_DEPENDENCY,
-              `${
-                issuerLocator.name
-              } tried to access ${dependencyName} (a peer dependency) but it isn't provided by your application; this makes the require call ambiguous and unsound.
+              `${issuerLocator.name} tried to access ${dependencyName} (a peer dependency) but it isn't provided by your application; this makes the require call ambiguous and unsound.
 
-Required package: ${dependencyName}${
-                dependencyName !== requestForDisplay
-                  ? ` (via "${requestForDisplay}")`
-                  : ``
-              }
-Required by: ${issuerLocator.name}@${
-                issuerLocator.reference
-              } (via ${issuerForDisplay})
+Required package: ${dependencyName}${dependencyName !== requestForDisplay ? ` (via "${requestForDisplay}")` : ``}
+Required by: ${issuerLocator.name}@${issuerLocator.reference} (via ${issuerForDisplay})
 ${brokenAncestors
   .map(
     (
@@ -25475,18 +25427,10 @@ ${brokenAncestors
           } else {
             error = makeError(
               ErrorCode.MISSING_PEER_DEPENDENCY,
-              `${
-                issuerLocator.name
-              } tried to access ${dependencyName} (a peer dependency) but it isn't provided by its ancestors; this makes the require call ambiguous and unsound.
+              `${issuerLocator.name} tried to access ${dependencyName} (a peer dependency) but it isn't provided by its ancestors; this makes the require call ambiguous and unsound.
 
-Required package: ${dependencyName}${
-                dependencyName !== requestForDisplay
-                  ? ` (via "${requestForDisplay}")`
-                  : ``
-              }
-Required by: ${issuerLocator.name}@${
-                issuerLocator.reference
-              } (via ${issuerForDisplay})
+Required package: ${dependencyName}${dependencyName !== requestForDisplay ? ` (via "${requestForDisplay}")` : ``}
+Required by: ${issuerLocator.name}@${issuerLocator.reference} (via ${issuerForDisplay})
 
 ${brokenAncestors
   .map(
@@ -25514,11 +25458,7 @@ ${brokenAncestors
               ErrorCode.UNDECLARED_DEPENDENCY,
               `Your application tried to access ${dependencyName}. While this module is usually interpreted as a Node builtin, your resolver is running inside a non-Node resolution context where such builtins are ignored. Since ${dependencyName} isn't otherwise declared in your dependencies, this makes the require call ambiguous and unsound.
 
-Required package: ${dependencyName}${
-                dependencyName !== requestForDisplay
-                  ? ` (via "${requestForDisplay}")`
-                  : ``
-              }
+Required package: ${dependencyName}${dependencyName !== requestForDisplay ? ` (via "${requestForDisplay}")` : ``}
 Required by: ${issuerForDisplay}
 `,
               {
@@ -25530,17 +25470,9 @@ Required by: ${issuerForDisplay}
           } else {
             error = makeError(
               ErrorCode.UNDECLARED_DEPENDENCY,
-              `${
-                issuerLocator.name
-              } tried to access ${dependencyName}. While this module is usually interpreted as a Node builtin, your resolver is running inside a non-Node resolution context where such builtins are ignored. Since ${dependencyName} isn't otherwise declared in ${
-                issuerLocator.name
-              }'s dependencies, this makes the require call ambiguous and unsound.
+              `${issuerLocator.name} tried to access ${dependencyName}. While this module is usually interpreted as a Node builtin, your resolver is running inside a non-Node resolution context where such builtins are ignored. Since ${dependencyName} isn't otherwise declared in ${issuerLocator.name}'s dependencies, this makes the require call ambiguous and unsound.
 
-Required package: ${dependencyName}${
-                dependencyName !== requestForDisplay
-                  ? ` (via "${requestForDisplay}")`
-                  : ``
-              }
+Required package: ${dependencyName}${dependencyName !== requestForDisplay ? ` (via "${requestForDisplay}")` : ``}
 Required by: ${issuerForDisplay}
 `,
               {
@@ -25557,11 +25489,7 @@ Required by: ${issuerForDisplay}
               ErrorCode.UNDECLARED_DEPENDENCY,
               `Your application tried to access ${dependencyName}, but it isn't declared in your dependencies; this makes the require call ambiguous and unsound.
 
-Required package: ${dependencyName}${
-                dependencyName !== requestForDisplay
-                  ? ` (via "${requestForDisplay}")`
-                  : ``
-              }
+Required package: ${dependencyName}${dependencyName !== requestForDisplay ? ` (via "${requestForDisplay}")` : ``}
 Required by: ${issuerForDisplay}
 `,
               {
@@ -25573,18 +25501,10 @@ Required by: ${issuerForDisplay}
           } else {
             error = makeError(
               ErrorCode.UNDECLARED_DEPENDENCY,
-              `${
-                issuerLocator.name
-              } tried to access ${dependencyName}, but it isn't declared in its dependencies; this makes the require call ambiguous and unsound.
+              `${issuerLocator.name} tried to access ${dependencyName}, but it isn't declared in its dependencies; this makes the require call ambiguous and unsound.
 
-Required package: ${dependencyName}${
-                dependencyName !== requestForDisplay
-                  ? ` (via "${requestForDisplay}")`
-                  : ``
-              }
-Required by: ${issuerLocator.name}@${
-                issuerLocator.reference
-              } (via ${issuerForDisplay})
+Required package: ${dependencyName}${dependencyName !== requestForDisplay ? ` (via "${requestForDisplay}")` : ``}
+Required by: ${issuerLocator.name}@${issuerLocator.reference} (via ${issuerForDisplay})
 `,
               {
                 request: requestForDisplay,
@@ -25620,14 +25540,8 @@ Required by: ${issuerLocator.name}@${
           ErrorCode.MISSING_DEPENDENCY,
           `A dependency seems valid but didn't get installed for some reason. This might be caused by a partial install, such as dev vs prod.
 
-Required package: ${dependencyLocator.name}@${dependencyLocator.reference}${
-            dependencyLocator.name !== requestForDisplay
-              ? ` (via "${requestForDisplay}")`
-              : ``
-          }
-Required by: ${issuerLocator.name}@${
-            issuerLocator.reference
-          } (via ${issuerForDisplay})
+Required package: ${dependencyLocator.name}@${dependencyLocator.reference}${dependencyLocator.name !== requestForDisplay ? ` (via "${requestForDisplay}")` : ``}
+Required by: ${issuerLocator.name}@${issuerLocator.reference} (via ${issuerForDisplay})
 `,
           {
             request: requestForDisplay,
@@ -25903,9 +25817,7 @@ function makeManager(pnpapi, opts) {
     const stats = opts.fakeFs.statSync(pnpApiPath);
     if (stats.mtime > apiEntry.stats.mtime) {
       process.emitWarning(
-        `[Warning] The runtime detected new information in a PnP file; reloading the API instance (${npath.fromPortablePath(
-          pnpApiPath
-        )})`
+        `[Warning] The runtime detected new information in a PnP file; reloading the API instance (${npath.fromPortablePath(pnpApiPath)})`
       );
       apiEntry.stats = stats;
       apiEntry.instance = loadApiInstance(pnpApiPath);
